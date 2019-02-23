@@ -7,4 +7,9 @@
     <string name="signup">Signup</string>
     <string name="forget_pass">Forget password</string>
     <string name="hello_blank_fragment" />
+    <string name="please_wait">Please wait...</string>
+    <string name="network_problem">Please check your network connection</string>
+    <string name="authentication_failed">Please try again</string>
+    <string name="enter_mail_pass">Mail or password is empty</string>
+
 </resources>

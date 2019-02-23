@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#0589e1</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="editText">#fafafa</color>
     <color name="mailColorStart">#DA4453</color>
     <color name="mailColorEnd">#89216B</color>
