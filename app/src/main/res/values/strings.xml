@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">iPlay</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mail">Mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="not_have_account">Don\'t have account</string>
+    <string name="signup">Signup</string>
+    <string name="forget_pass">Forget password</string>
+    <string name="hello_blank_fragment" />
 </resources>
