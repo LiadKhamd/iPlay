@@ -15,15 +15,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        Intent intent = getIntent();
-//        Bundle noMailVerifiedBundle = intent.getBundleExtra(MailVerificationFragment.NO_MAIL_VERIFIED);
-//        if (noMailVerifiedBundle != null) {//Check if the user is not verified the mail
-//            Fragment mailVerFragment = new MailVerificationFragment();
-//            //createCustomTransaction(this, mailVerFragment);//Goto mail verify fragment
-//        } else {//Set login page fragment
-//            Fragment loginFrag = new LoginFragment();
-//            getSupportFragmentManager().beginTransaction().replace(R.id.main_login, loginFrag).commit();
-//        }
+        Intent intent = getIntent();
+        Bundle noMailVerifiedBundle = intent.getBundleExtra(MailVerificationFragment.NO_MAIL_VERIFIED);
+        if (noMailVerifiedBundle != null) {//Check if the user is not verified the mail
+            Fragment mailVerFragment = new MailVerificationFragment();
+            getSupportFragmentManager().beginTransaction().
+                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.main_login, mailVerFragment)
+                            .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_login, mailVerFragment).commit();
+        } else {//Set login page fragment
+            Fragment loginFrag = new LoginFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_login, loginFrag).commit();
+        }
     }
 
 //    public static AlertDialog.Builder createDialog(Context context, int message) {//Create dialog with theme
