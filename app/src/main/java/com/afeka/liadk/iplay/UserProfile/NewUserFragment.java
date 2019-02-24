@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
+import com.afeka.liadk.iplay.TournamentActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
@@ -102,9 +103,10 @@ public class NewUserFragment extends Fragment {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 mProgressDialog.cancel();
-                                                getActivity().getSupportFragmentManager().beginTransaction().
-                                                        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                                                        .replace(R.id.user_profile, new UserProfileImageFragment()).commit();
+                                                Intent intent = new Intent(getActivity(), TournamentActivity.class);
+                                                startActivity(intent);
+                                                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                getActivity().finish();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
