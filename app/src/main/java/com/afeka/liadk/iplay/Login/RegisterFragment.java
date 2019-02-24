@@ -10,6 +10,8 @@ import com.afeka.liadk.iplay.R;
 
 public class RegisterFragment extends Fragment {
 
+    public static final String MAIL_SAVER = "Mail saver";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

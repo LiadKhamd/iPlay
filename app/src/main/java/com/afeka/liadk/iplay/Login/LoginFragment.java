@@ -35,22 +35,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             public void onClick(View view) {
                 //Goto register fragment
                 Fragment registerFrag = new RegisterFragment();
+                String mail = mMail.getText().toString().trim();
+                if (!TextUtils.isEmpty(mail)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(RegisterFragment.MAIL_SAVER, mail);
+                    registerFrag.setArguments(bundle);
+                }
                 getActivity().getSupportFragmentManager().beginTransaction().
                         setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                         .replace(R.id.main_login, registerFrag).addToBackStack(null).commit();
             }
         });
-        view.findViewById(R.id.rest_password_login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Goto rest password fragment
-                Fragment restPassFrag = new RestPasswordFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.main_login, restPassFrag).addToBackStack(null).commit();
+        view.findViewById(R.id.rest_password_login).
 
-            }
-        });
+                setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Goto rest password fragment
+                        Fragment restPassFrag = new RestPasswordFragment();
+                        String mail = mMail.getText().toString().trim();
+                        if (!TextUtils.isEmpty(mail)) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(RestPasswordFragment.MAIL_SAVER, mail);
+                            restPassFrag.setArguments(bundle);
+                        }
+                        getActivity().getSupportFragmentManager().beginTransaction().
+                                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                                .replace(R.id.main_login, restPassFrag).addToBackStack(null).commit();
+
+                    }
+                });
         view.findViewById(R.id.login_button).setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
         mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
