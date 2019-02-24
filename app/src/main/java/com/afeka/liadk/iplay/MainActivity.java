@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afeka.liadk.iplay.Login.LoginActivity;
+import com.afeka.liadk.iplay.UserProfile.UserProfileActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     } else if (CurrentUser.getDisplayName() == null || CurrentUser.getDisplayName().isEmpty()) {
                         //update user profile -> first time create username
-//                        Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
-//                        startActivity(intent);
-//                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//                        finish();
+                        Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
+                        intent.putExtra(UserProfileActivity.FIRST_TIME, new Bundle());
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
                     } else {
                         //goto main app
 //                        Intent intent = new Intent(getBaseContext(), AppActivity.class);

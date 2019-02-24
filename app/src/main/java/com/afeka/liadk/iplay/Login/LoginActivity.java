@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
                     setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.main_login, mailVerFragment)
                     .commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_login, mailVerFragment).commit();
         } else {//Set login page fragment
             Fragment loginFrag = new LoginFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_login, loginFrag).commit();

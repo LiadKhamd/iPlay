@@ -3,7 +3,7 @@
     <string name="mail">Mail</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="not_have_account">Don\'t have account</string>
+    <string name="not_have_account">You don\'t have account</string>
     <string name="signup">Signup</string>
     <string name="forget_pass">Forget password</string>
     <string name="hello_blank_fragment" />
@@ -27,5 +27,10 @@
     <string name="mail_resend">Resend mail to</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
+    <string name="create_username">Create your username</string>
+    <string name="username">Username</string>
+    <string name="next">Next</string>
+    <string name="empty_username">Username can\'t be empty</string>
+    <string name="username_used">Username is already in use</string>
 
 </resources>
