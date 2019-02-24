@@ -7,11 +7,12 @@ package com.afeka.liadk.iplay;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afeka.liadk.iplay.Login.LoginActivity;
-import com.afeka.liadk.iplay.Login.LoginFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -49,11 +50,45 @@ public class MainActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         } else {
-
+            CurrentUser.reload().addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    //problem goto login
+                    firebaseAuth.signOut();
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    if (!CurrentUser.isEmailVerified()) {
+                        //mail isn't verify
+                        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                        intent.putExtra(LoginActivity.NO_MAIL_VERIFIED, new Bundle());
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
+                    } else if (CurrentUser.getDisplayName() == null || CurrentUser.getDisplayName().isEmpty()) {
+                        //update user profile -> first time create username
+//                        Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
+//                        startActivity(intent);
+//                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                        finish();
+                    } else {
+                        //goto main app
+//                        Intent intent = new Intent(getBaseContext(), AppActivity.class);
+//                        startActivity(intent);
+//                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                        finish();
+                    }
+                }
+            });
         }
     }
 
-    public static void logout(){
+    public static void logout() {
         firebaseAuth.signOut();
     }
 }

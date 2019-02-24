@@ -11,12 +11,14 @@ import com.afeka.liadk.iplay.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static final String NO_MAIL_VERIFIED = "Mail not verify";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Intent intent = getIntent();
-        Bundle noMailVerifiedBundle = intent.getBundleExtra(MailVerificationFragment.NO_MAIL_VERIFIED);
+        Bundle noMailVerifiedBundle = intent.getBundleExtra(NO_MAIL_VERIFIED);
         if (noMailVerifiedBundle != null) {//Check if the user is not verified the mail
             Fragment mailVerFragment = new MailVerificationFragment();
             getSupportFragmentManager().beginTransaction().
