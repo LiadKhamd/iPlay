@@ -16,5 +16,10 @@
     <string name="enter_mail">Please enter your mail</string>
     <string name="wrong_mail">Wrong mail</string>
     <string name="check_mail">Please check your mail</string>
+    <string name="register">Register</string>
+    <string name="weak_password">Weak password</string>
+    <string name="email_badly_formatted">Please check that you have entered the email correctly</string>
+    <string name="mail_in_use">Mail is already in used</string>
+    <string name="try_again">Please try again</string>
 
 </resources>

@@ -21,7 +21,8 @@ public class RestPasswordFragment extends Fragment {
 
     public static final String MAIL_SAVER = "Mail saver";
 
-    private TextView mTextView;
+    private TextView mMail;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,26 +30,26 @@ public class RestPasswordFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rest_password, container, false);
         Bundle bundle = this.getArguments();
-        mTextView = view.findViewById(R.id.mail_rest);
+        mMail = view.findViewById(R.id.mail_rest);
         if (bundle != null) {
             String mail = bundle.getString(MAIL_SAVER, null);
             if (mail != null)
-                mTextView.setText(mail);
+                mMail.setText(mail);
         }
+        mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
+        mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
+        mProgressDialog.setCancelable(false);
         view.findViewById(R.id.rest_pass_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mail = mTextView.getText().toString().trim();
+                String mail = mMail.getText().toString().trim();
                 if (!TextUtils.isEmpty(mail)) {
                     //send rest password mail
-                    final ProgressDialog progressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
-                    progressDialog.setMessage(getContext().getString(R.string.please_wait));
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
+                    mProgressDialog.show();
                     MainActivity.firebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            progressDialog.cancel();
+                            mProgressDialog.cancel();
                             getActivity().getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             Toast.makeText(getContext(), R.string.check_mail, Toast.LENGTH_LONG).show();
                             Fragment loginFrag = new LoginFragment();
@@ -59,7 +60,7 @@ public class RestPasswordFragment extends Fragment {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.cancel();
+                            mProgressDialog.cancel();
                             Toast.makeText(getContext(), R.string.wrong_mail, Toast.LENGTH_LONG).show();
                         }
                     });
