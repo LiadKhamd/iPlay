@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
@@ -73,6 +74,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseNetworkException e) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                }catch (FirebaseFirestoreException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (FirebaseAuthWeakPasswordException e) {
                                     Toast.makeText(getContext(), R.string.weak_password, Toast.LENGTH_LONG).show();

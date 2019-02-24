@@ -19,6 +19,8 @@ import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class RestPasswordFragment extends Fragment {
 
@@ -64,7 +66,15 @@ public class RestPasswordFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             mProgressDialog.cancel();
-                            Toast.makeText(getContext(), R.string.wrong_mail, Toast.LENGTH_LONG).show();
+                            try {
+                                throw e;
+                            } catch (FirebaseNetworkException ex) {
+                                Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                            } catch (FirebaseFirestoreException ex) {
+                                Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                            } catch (Exception ex) {
+                                Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
                 } else {

@@ -22,6 +22,7 @@ import com.afeka.liadk.iplay.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class MailVerificationFragment extends Fragment {
 
@@ -106,6 +107,8 @@ public class MailVerificationFragment extends Fragment {
                                 try {
                                     throw e;
                                 } catch (FirebaseNetworkException e1) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                }catch (FirebaseFirestoreException e1) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e1) {
                                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();

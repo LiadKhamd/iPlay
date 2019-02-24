@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -104,6 +105,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseNetworkException e) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                }catch (FirebaseFirestoreException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getContext(), R.string.authentication_failed, Toast.LENGTH_LONG).show();
