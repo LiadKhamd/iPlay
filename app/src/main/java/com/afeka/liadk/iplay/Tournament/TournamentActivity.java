@@ -1,7 +1,12 @@
-package com.afeka.liadk.iplay;
+package com.afeka.liadk.iplay.Tournament;
+/*
+ *Created by liadk
+ */
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import com.afeka.liadk.iplay.R;
 
 public class TournamentActivity extends AppCompatActivity {
 

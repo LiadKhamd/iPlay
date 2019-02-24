@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afeka.liadk.iplay.Login.LoginActivity;
+import com.afeka.liadk.iplay.Tournament.TournamentActivity;
 import com.afeka.liadk.iplay.UserProfile.UserProfileActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     } else {
                         //goto main app
-//                        Intent intent = new Intent(getBaseContext(), AppActivity.class);
-//                        startActivity(intent);
-//                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//                        finish();
+                        Intent intent = new Intent(getBaseContext(), TournamentActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
                     }
                 }
             });

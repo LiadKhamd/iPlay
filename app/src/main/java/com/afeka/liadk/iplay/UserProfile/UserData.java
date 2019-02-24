@@ -1,6 +1,6 @@
 package com.afeka.liadk.iplay.UserProfile;
 
-/**
+/*
  * Created by liadk
  */
 public class UserData {

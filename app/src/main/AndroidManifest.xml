@@ -10,7 +10,7 @@
         android:supportsRtl="false"
         android:testOnly="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TournamentActivity"></activity>
+        <activity android:name=".Tournament.TournamentActivity"></activity>
         <activity android:name=".UserProfile.UserProfileActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".MainActivity">

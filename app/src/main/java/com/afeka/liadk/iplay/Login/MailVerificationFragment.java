@@ -108,7 +108,7 @@ public class MailVerificationFragment extends Fragment {
                                     throw e;
                                 } catch (FirebaseNetworkException e1) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                }catch (FirebaseFirestoreException e1) {
+                                } catch (FirebaseFirestoreException e1) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e1) {
                                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();

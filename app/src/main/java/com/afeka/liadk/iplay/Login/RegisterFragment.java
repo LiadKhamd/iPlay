@@ -75,7 +75,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                     throw task.getException();
                                 } catch (FirebaseNetworkException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                }catch (FirebaseFirestoreException e) {
+                                } catch (FirebaseFirestoreException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (FirebaseAuthWeakPasswordException e) {
                                     Toast.makeText(getContext(), R.string.weak_password, Toast.LENGTH_LONG).show();

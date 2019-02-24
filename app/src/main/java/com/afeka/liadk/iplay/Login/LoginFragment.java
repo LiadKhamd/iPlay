@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                     throw task.getException();
                                 } catch (FirebaseNetworkException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                }catch (FirebaseFirestoreException e) {
+                                } catch (FirebaseFirestoreException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getContext(), R.string.authentication_failed, Toast.LENGTH_LONG).show();

@@ -1,4 +1,7 @@
 package com.afeka.liadk.iplay.UserProfile;
+/*
+ *Created by liadk
+ */
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -6,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.TournamentActivity;
+import com.afeka.liadk.iplay.Tournament.TournamentActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
@@ -78,7 +80,7 @@ public class NewUserFragment extends Fragment {
                         throw ex;
                     } catch (FirebaseNetworkException e) {
                         Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                    }catch (FirebaseFirestoreException e) {
+                    } catch (FirebaseFirestoreException e) {
                         Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
@@ -121,7 +123,7 @@ public class NewUserFragment extends Fragment {
                                             throw ex;
                                         } catch (FirebaseNetworkException e) {
                                             Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                        }catch (FirebaseFirestoreException e) {
+                                        } catch (FirebaseFirestoreException e) {
                                             Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                         } catch (Exception e) {
                                             Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
