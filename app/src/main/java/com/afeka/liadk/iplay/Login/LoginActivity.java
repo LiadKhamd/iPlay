@@ -1,11 +1,12 @@
 package com.afeka.liadk.iplay.Login;
 /*
-  Created by liadk
+ *Created by liadk
  */
+
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.afeka.liadk.iplay.R;
 
@@ -22,9 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         if (noMailVerifiedBundle != null) {//Check if the user is not verified the mail
             Fragment mailVerFragment = new MailVerificationFragment();
             getSupportFragmentManager().beginTransaction().
-                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                    setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.main_login, mailVerFragment)
-                            .commit();
+                    .commit();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_login, mailVerFragment).commit();
         } else {//Set login page fragment
             Fragment loginFrag = new LoginFragment();

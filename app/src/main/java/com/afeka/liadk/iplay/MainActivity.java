@@ -1,7 +1,6 @@
 package com.afeka.liadk.iplay;
-
 /*
-  Created by liadk
+ *Created by liadk
  */
 
 import android.content.Intent;
