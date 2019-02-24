@@ -62,7 +62,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         getActivity().getSupportFragmentManager().beginTransaction().
                                 setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                                 .replace(R.id.main_login, restPassFrag).addToBackStack(null).commit();
-
                     }
                 });
         view.findViewById(R.id.login_button).setOnClickListener(this);

@@ -7,9 +7,11 @@ package com.afeka.liadk.iplay;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afeka.liadk.iplay.Login.LoginActivity;
+import com.afeka.liadk.iplay.Login.LoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -49,5 +51,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
         }
+    }
+
+    public static void logout(){
+        firebaseAuth.signOut();
     }
 }

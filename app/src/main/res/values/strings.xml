@@ -21,5 +21,11 @@
     <string name="email_badly_formatted">Please check that you have entered the email correctly</string>
     <string name="mail_in_use">Mail is already in used</string>
     <string name="try_again">Please try again</string>
+    <string name="verify_mail">Please check your email. We\'ve sent you an email and we\'re waiting for your approval</string>
+    <string name="send_again">Send again</string>
+    <string name="logout">Logout</string>
+    <string name="mail_resend">Resend mail to</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

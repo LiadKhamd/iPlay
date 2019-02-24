@@ -1,110 +1,132 @@
 package com.afeka.liadk.iplay.Login;
 
-import android.content.Context;
-import android.net.Uri;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseNetworkException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MailVerificationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MailVerificationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MailVerificationFragment extends Fragment {
-    public static final String NO_MAIL_VERIFIED = "No mail verified";
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private final int REFRESH = 1000;
 
-    private OnFragmentInteractionListener mListener;
-
-    public MailVerificationFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MailVerificationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MailVerificationFragment newInstance(String param1, String param2) {
-        MailVerificationFragment fragment = new MailVerificationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private Thread mThread;
+    private boolean mThreadRefresh;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mail_verification, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        View view = inflater.inflate(R.layout.fragment_mail_verification, container, false);
+        getActivity().getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        //Animation background
+        AnimationDrawable animationDrawable = (AnimationDrawable) view.findViewById(R.id.mainVerificationMail).getBackground();
+        animationDrawable.setEnterFadeDuration(1000);
+        animationDrawable.setExitFadeDuration(1000);
+        animationDrawable.start();
+        view.findViewById(R.id.send_again_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendAgain();
+            }
+        });
+        view.findViewById(R.id.logout_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+        return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public void onResume() {
+        super.onResume();
+        mThreadRefresh = true;
+        mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //Refresh the page in order to check if mail has verified
+                while (mThreadRefresh) {
+                    try {
+                        MainActivity.CurrentUser.reload();
+                        if (MainActivity.CurrentUser.isEmailVerified()) {
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            getActivity().finish();
+                        }
+                        Thread.sleep(REFRESH);
+                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        });
+        mThread.start();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onPause() {
+        super.onPause();
+        mThreadRefresh = false;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    private void sendAgain() {
+        //send again mail verification
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        String resendMail = getContext().getString(R.string.mail_resend) + " " + MainActivity.CurrentUser.getEmail();
+        builder.setMessage(resendMail)
+                .setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        MainActivity.CurrentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getContext(), R.string.check_mail, Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                try {
+                                    throw e;
+                                } catch (FirebaseNetworkException e1) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                } catch (Exception e1) {
+                                    Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(19);
+    }
+
+    private void logout() {
+        MainActivity.logout();
+        Fragment loginFrag = new LoginFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().
+                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.main_login, loginFrag).addToBackStack(null).commit();
     }
 }
