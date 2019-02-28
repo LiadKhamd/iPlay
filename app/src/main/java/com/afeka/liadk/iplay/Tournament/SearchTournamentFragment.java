@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import com.afeka.liadk.iplay.R;
 
 
-public class CreateTournamentFragment extends Fragment {
+public class SearchTournamentFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_tournament, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_tournament, container, false);
         return view;
     }
 }

@@ -28,16 +28,16 @@ public class TournamentActivity extends AppCompatActivity {
                 Fragment createTournament = new CreateTournamentFragment();
                 getSupportFragmentManager().beginTransaction().
                         setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.tournament_layout, createTournament).commit();
+                        .replace(R.id.tournament_layout, createTournament).addToBackStack(null).commit();
             }
         });
         findViewById(R.id.search_for_tournament).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment createTournament = new CreateTournamentFragment();
+                Fragment searchTournament = new SearchTournamentFragment();
                 getSupportFragmentManager().beginTransaction().
                         setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.tournament_layout, createTournament).commit();
+                        .replace(R.id.tournament_layout, searchTournament).addToBackStack(null).commit();
             }
         });
         findViewById(R.id.my_proflie).setOnClickListener(new View.OnClickListener() {

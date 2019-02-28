@@ -6,7 +6,6 @@
     <string name="not_have_account">You don\'t have account</string>
     <string name="signup">Signup</string>
     <string name="forget_pass">Forget password</string>
-    <string name="hello_blank_fragment" />
     <string name="please_wait">Please wait&#8230;</string>
     <string name="network_problem">Please check your network connection</string>
     <string name="authentication_failed">Please try again</string>
