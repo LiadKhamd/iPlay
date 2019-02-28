@@ -98,6 +98,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                     //Return to main activity
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
+                                    getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                     getActivity().finish();
                                 }
                             } else {

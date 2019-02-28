@@ -74,7 +74,6 @@ public class MailVerificationFragment extends Fragment {
                             getActivity().finish();
                         }
                         Thread.sleep(REFRESH);
-                    } catch (InterruptedException e) {
                     } catch (Exception e) {
                     }
                 }
