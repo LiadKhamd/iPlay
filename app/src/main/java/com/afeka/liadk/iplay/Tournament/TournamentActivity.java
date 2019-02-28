@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
+import com.afeka.liadk.iplay.UserProfile.UserProfileActivity;
 
 public class TournamentActivity extends AppCompatActivity {
 
@@ -42,10 +43,9 @@ public class TournamentActivity extends AppCompatActivity {
         findViewById(R.id.my_proflie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment createTournament = new CreateTournamentFragment();
-                getSupportFragmentManager().beginTransaction().
-                        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                        .replace(R.id.tournament_layout, createTournament).commit();
+                Intent intent = new Intent(getBaseContext(), UserProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         findViewById(R.id.logout_tournament).setOnClickListener(new View.OnClickListener() {
