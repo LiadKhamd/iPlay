@@ -34,8 +34,10 @@
     <string name="username_used">Username is already in use</string>
     <string name="search_tournament">Search for tournament</string>
     <string name="create_tournament">Create tournament</string>
-    <string name="proflie">My profile</string>
     <string name="slogan">Because I want to play</string>
     <string name="my_profile">My profile</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirm_logout">Do you sure?</string>
 
 </resources>
