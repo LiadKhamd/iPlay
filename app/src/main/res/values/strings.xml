@@ -32,5 +32,10 @@
     <string name="next">Next</string>
     <string name="empty_username">Username can\'t be empty</string>
     <string name="username_used">Username is already in use</string>
+    <string name="search_tournament">Search for tournament</string>
+    <string name="create_tournament">Create tournament</string>
+    <string name="proflie">My profile</string>
+    <string name="slogan">Because I want to play</string>
+    <string name="my_profile">My profile</string>
 
 </resources>
