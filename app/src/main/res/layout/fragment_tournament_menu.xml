@@ -41,13 +41,13 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="0.5" />
 
     <GridLayout
         android:id="@+id/mainGrid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="7"
         android:alignmentMode="alignMargins"
         android:columnCount="2"
         android:columnOrderPreserved="false"
@@ -60,9 +60,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="16dp"
             android:background="@color/colorPrimary"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
@@ -85,6 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="16dp"
                     android:text="@string/create_tournament"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -101,9 +100,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -125,6 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="16dp"
                     android:text="@string/search_tournament"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -141,9 +139,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -165,6 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="16dp"
                     android:text="@string/my_profile"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -181,9 +178,7 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 
@@ -205,6 +200,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="16dp"
                     android:text="@string/logout"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -217,10 +213,5 @@
 
 
     </GridLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
 
 </LinearLayout>
