@@ -16,7 +16,6 @@ public class TournamentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tournament);
         Fragment menuFragment = new TournamentMenuFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.tournament_layout, menuFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
     }
 }

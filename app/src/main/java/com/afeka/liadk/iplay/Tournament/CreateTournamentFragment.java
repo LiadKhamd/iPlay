@@ -8,8 +8,8 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,7 +176,11 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                             public void onSuccess(Void aVoid) {
                                                 mProgressDialog.cancel();
                                                 Toast.makeText(getContext(), R.string.tournament_has_create, Toast.LENGTH_LONG).show();
-
+                                                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                                Fragment registeredTournament = new RegisteredTournamentFragment();
+                                                getActivity().getSupportFragmentManager().beginTransaction()
+                                                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                                                        .replace(R.id.tournament_layout, registeredTournament).commit();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
