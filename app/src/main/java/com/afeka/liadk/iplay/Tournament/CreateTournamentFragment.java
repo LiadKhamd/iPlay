@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -29,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -38,6 +42,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
     private EditText mCity, mPlace, mSport, mMaxParticipants, mCode;
     private TextView mTime;
     private Switch mPrivate;
+    private RelativeLayout mPrivateRelativeLayout;
     private ProgressDialog mProgressDialog;
     private CollectionReference mCollectionReferenceEventCurrentUser, mCollectionReferenceEvent;
 
@@ -80,6 +85,26 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
         mProgressDialog.setCancelable(false);
         mCollectionReferenceEvent = FirebaseFirestore.getInstance().collection("events");
         mCollectionReferenceEventCurrentUser = FirebaseFirestore.getInstance().collection("users");
+        mPrivateRelativeLayout = view.findViewById(R.id.private_tournament_layout);
+        mPrivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPrivateRelativeLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPrivateRelativeLayout.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
+        });
         return view;
     }
 
@@ -99,11 +124,11 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                 date.setMinutes(Integer.parseInt(splitTime[1]));
                 time = date.getTime();
                 String city, place, sport;
-                city = mCity.getText().toString().trim();
-                place = mPlace.getText().toString().trim();
-                sport = mSport.getText().toString().trim();
+                city = mCity.getText().toString().trim().toLowerCase();
+                place = mPlace.getText().toString().trim().toLowerCase();
+                sport = mSport.getText().toString().trim().toLowerCase();
                 if ((!TextUtils.isEmpty(city)) && (!TextUtils.isEmpty(place)) && (!TextUtils.isEmpty(sport)) && (!TextUtils.isEmpty(String.valueOf(maxParticipants)))) {
-                    boolean privateTournament = mPrivate.getShowText();
+                    boolean privateTournament = mPrivate.isChecked();
                     String code = null;
                     boolean codeIsEmpty = false;
                     if (privateTournament) {
@@ -128,6 +153,9 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
 
     private void uploadTournament(final TournamentInfo tournamentInfo) {
         mProgressDialog.show();
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormater = new SimpleDateFormat("dd.MM.yyyy");
+        final String newDateStr = dateFormater.format(date);
         final String key = System.currentTimeMillis() + "";
         mCollectionReferenceEventCurrentUser.document(MainActivity.CurrentUser.getDisplayName()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -137,6 +165,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                         userData.setmEvent(key);
                         mCollectionReferenceEvent.document("city").collection(tournamentInfo.getmCity())
                                 .document("sport").collection(tournamentInfo.getmSport())
+                                .document("date").collection(newDateStr)
                                 .document(key).set(tournamentInfo)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

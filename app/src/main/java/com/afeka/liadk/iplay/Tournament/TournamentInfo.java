@@ -101,4 +101,9 @@ public class TournamentInfo {
     public void setmTime(long mTime) {
         this.mTime = mTime;
     }
+
+    public void addUser(String username) {
+        if (mParticipantsUsersnames.size() < mMaxParticipants)
+            mParticipantsUsersnames.add(username);
+    }
 }
