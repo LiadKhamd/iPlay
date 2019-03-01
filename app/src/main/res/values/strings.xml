@@ -42,8 +42,12 @@
     <string name="place">Place</string>
     <string name="sport">Sport</string>
     <string name="max_participants">Max participants</string>
+    <string name="time">Time</string>
     <string name="code">Code</string>
     <string name="private_switch">Private</string>
     <string name="create">Create</string>
+    <string name="search">Search</string>
+    <string name="not_valid">You need to fill in all the form</string>
+    <string name="tournament_has_create">You tournament has been created</string>
 
 </resources>
