@@ -38,7 +38,10 @@ public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<Tourname
         TournamentInfo tournamentInfo = mData.get(position).toObject(TournamentInfo.class);
         viewHolder.mPlace.setText(tournamentInfo.getmPlace());
         Date date = new Date(tournamentInfo.getmTime());
-        viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes());
+        if (date.getMinutes() < 10 || date.getMinutes() == 0)
+            viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes() + "0");
+        else
+            viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes());
         viewHolder.mPlayers.setText(tournamentInfo.getPlayers() + "/" + tournamentInfo.getmMaxParticipants());
         if (tournamentInfo.ismPrivate())
             viewHolder.mPrivate.setText(R.string.is_private);

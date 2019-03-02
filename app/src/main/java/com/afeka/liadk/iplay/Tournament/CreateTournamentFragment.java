@@ -74,7 +74,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (minute < 10)
+                                        if (minute < 10 || minute == 0)
                                             mTime.setText(hourOfDay + ":" + "0" + minute);
                                         else
                                             mTime.setText(hourOfDay + ":" + minute);

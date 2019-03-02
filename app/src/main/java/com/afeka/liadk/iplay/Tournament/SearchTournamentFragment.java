@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.Tournament.Logic.CloudFirestoreConst;
+import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentRecyclerViewAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +45,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
     private CollectionReference mCollectionReferenceEvent;
     private TournamentRecyclerViewAdapter mAdapter;
     private TextView mWaitForResultTournament;
+    private List<DocumentSnapshot> mDocuments;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,9 +60,6 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         mProgressDialog.setCancelable(false);
         mCollectionReferenceEvent = FirebaseFirestore.getInstance().collection(EVENT);
         mWaitForResultTournament = view.findViewById(R.id.result_tournament_search);
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext()
-////                mRecyclerView.getLayoutManager().getOrientation());
-////        recyclerView.addItemDecoration(dividerItemDecoration);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
@@ -98,18 +97,20 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
             }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    mProgressDialog.cancel();
-                    if (queryDocumentSnapshots.getDocuments().size() == 0) {
+                    mDocuments = queryDocumentSnapshots.getDocuments();
+                    removeOldEvent();
+                    mAdapter = new TournamentRecyclerViewAdapter(getContext(), mDocuments);
+                    mRecyclerView.setAdapter(mAdapter);
+                    if (mDocuments.size() == 0) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 mWaitForResultTournament.setText(R.string.result_not_found);
+                                mDocuments.clear();
+                                mAdapter.notifyDataSetChanged();
                             }
                         });
                     } else {
-                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-                        mAdapter = new TournamentRecyclerViewAdapter(getContext(), documents);
-                        mRecyclerView.setAdapter(mAdapter);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -118,10 +119,26 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
                             }
                         });
                     }
+                    mProgressDialog.cancel();
                 }
             });
         } else {
             Toast.makeText(getContext(), R.string.not_valid, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void removeOldEvent() {
+        if (mDocuments != null && mDocuments.size() >= 0) {
+            TournamentInfo tournamentInfo;
+            Date tournamentDate, currentDate;
+            for (int i = 0; i < mDocuments.size(); i++) {
+                tournamentInfo = mDocuments.get(i).toObject(TournamentInfo.class);
+                tournamentDate = new Date(tournamentInfo.getmTime());
+                currentDate = new Date(System.currentTimeMillis());
+                if (tournamentDate.compareTo(currentDate) <= 0) {
+                    mDocuments.remove(i--);
+                }
+            }
         }
     }
 }
