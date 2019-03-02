@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:foregroundGravity="center"
         android:gravity="center"
         android:text="@string/search_tournament"
@@ -26,7 +26,7 @@
         android:layout_marginVertical="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_weight="1">
+        android:layout_weight="1.5">
 
         <TextView
             android:id="@+id/city_search_text"
@@ -62,7 +62,7 @@
         android:layout_marginVertical="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_weight="1">
+        android:layout_weight="1.5">
 
         <TextView
             android:id="@+id/sport_search_text"
@@ -94,20 +94,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8">
+        android:layout_weight="7">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tournament_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:layout_weight="8">
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
 
         </android.support.v7.widget.RecyclerView>
 
         <TextView
+            android:id="@+id/result_tournament_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="16dp"
             android:gravity="center"
             android:text="@string/search_for_tournament"
             android:textColor="@color/colorAccent"

@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,8 +138,6 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
             date.setHours(Integer.parseInt(splitTime[0]));
             date.setMinutes(Integer.parseInt(splitTime[1]));
             time = date.getTime();
-            Log.e("mimi", date.toGMTString()+ "\t" + date.getHours()+"\t" +date.getMinutes());
-            Log.e("aqaqaqaqa", time + "\n" + currentTime);
             if (time - currentTime <= 0) {
                 //Check time
                 Toast.makeText(getContext(), R.string.time_not_valid, Toast.LENGTH_LONG).show();

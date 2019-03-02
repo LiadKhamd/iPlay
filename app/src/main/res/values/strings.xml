@@ -56,4 +56,5 @@
     <string name="time_not_valid">Time is not valid for today</string>
     <string name="max_palyer_not_valid">The max player need to be bigger than 1</string>
     <string name="code_empty">You need to fill in the code for private tournament</string>
+    <string name="is_private">Private</string>
 </resources>

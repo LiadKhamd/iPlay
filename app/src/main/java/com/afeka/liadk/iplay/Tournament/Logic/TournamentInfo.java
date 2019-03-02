@@ -106,4 +106,8 @@ public class TournamentInfo {
         if (mParticipantsUsersnames.size() < mMaxParticipants)
             mParticipantsUsersnames.add(username);
     }
+
+    public int getPlayers() {
+        return mParticipantsUsersnames.size();
+    }
 }
