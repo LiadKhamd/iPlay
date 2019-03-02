@@ -1,4 +1,4 @@
-package com.afeka.liadk.iplay.UserProfile;
+package com.afeka.liadk.iplay.UserProfile.Logic;
 
 /*
  * Created by liadk

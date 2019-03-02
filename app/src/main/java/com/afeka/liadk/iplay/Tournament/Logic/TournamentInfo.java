@@ -1,4 +1,4 @@
-package com.afeka.liadk.iplay.Tournament;
+package com.afeka.liadk.iplay.Tournament.Logic;
 
 import java.util.ArrayList;
 

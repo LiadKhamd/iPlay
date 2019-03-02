@@ -12,14 +12,12 @@ import android.view.ViewGroup;
 import com.afeka.liadk.iplay.R;
 
 
-public class RegisteredTournamentFragment extends Fragment {
-
-    public final static String TOURNAMENT = "TOURNAMENT INFO";
+public class TournamentDataFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_registered_tournament, container, false);
+        View view = inflater.inflate(R.layout.fragment_tournament_data, container, false);
         return view;
     }
 }

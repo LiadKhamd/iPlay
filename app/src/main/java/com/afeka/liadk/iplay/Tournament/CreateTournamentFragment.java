@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.UserProfile.UserData;
+import com.afeka.liadk.iplay.Tournament.Logic.CloudFirestoreConst;
+import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
+import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
@@ -37,7 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class CreateTournamentFragment extends Fragment implements View.OnClickListener {
+public class CreateTournamentFragment extends Fragment implements View.OnClickListener, CloudFirestoreConst {
 
     private EditText mCity, mPlace, mSport, mMaxParticipants, mCode;
     private TextView mTime;
@@ -72,11 +75,14 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mTime.setText(hourOfDay + ":" + minute);
+                                        if (minute < 10)
+                                            mTime.setText(hourOfDay + ":" + "0" + minute);
+                                        else
+                                            mTime.setText(hourOfDay + ":" + minute);
                                     }
                                 });
                             }
-                        }, currentTime.getHours(), currentTime.getMinutes(), true);
+                        }, currentTime.getHours(), currentTime.getMinutes(), false);
                 timePickerDialog.show();
             }
         });
@@ -111,51 +117,53 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         boolean isValidData = false;
-        String tempMaxParticipants = mMaxParticipants.getText().toString().trim();
-        if (!TextUtils.isEmpty(tempMaxParticipants)) {
-            String temptime = mTime.getText().toString().trim();
-            if (!TextUtils.isEmpty(temptime)) {
-                int maxParticipants;
-                long time;
-                maxParticipants = Integer.parseInt(tempMaxParticipants);
-                String[] splitTime = temptime.split(":");
-                Date date = new Date(System.currentTimeMillis());
-                date.setHours(Integer.parseInt(splitTime[0]));
-                date.setMinutes(Integer.parseInt(splitTime[1]));
-                time = date.getTime();
-                String city, place, sport;
-                city = mCity.getText().toString().trim().toLowerCase();
-                place = mPlace.getText().toString().trim().toLowerCase();
-                sport = mSport.getText().toString().trim().toLowerCase();
-                if ((!TextUtils.isEmpty(city)) && (!TextUtils.isEmpty(place)) && (!TextUtils.isEmpty(sport)) && (!TextUtils.isEmpty(String.valueOf(maxParticipants)))) {
-                    boolean privateTournament = mPrivate.isChecked();
-                    String code = null;
-                    boolean codeIsEmpty = false;
-                    if (privateTournament) {
-                        code = mCode.getText().toString().trim();
-                        if (TextUtils.isEmpty(code)) {
-                            codeIsEmpty = true;
-                        }
-                    }
-                    if (!codeIsEmpty) {
-                        isValidData = true;
-                        String username = MainActivity.CurrentUser.getDisplayName();
-                        TournamentInfo tournamentInfo = new TournamentInfo(city, place, sport, time, maxParticipants, privateTournament, code, username);
-                        uploadTournament(tournamentInfo);
-                    }
+        String city, place, sport, maxParticipantsString, timeString, code = null;
+        city = mCity.getText().toString().trim().toLowerCase();
+        place = mPlace.getText().toString().trim().toLowerCase();
+        sport = mSport.getText().toString().trim().toLowerCase();
+        timeString = mTime.getText().toString().trim();
+        maxParticipantsString = mMaxParticipants.getText().toString().trim();
+        boolean privateTournament = mPrivate.isChecked();
+        if ((!TextUtils.isEmpty(city)) && (!TextUtils.isEmpty(place)) && (!TextUtils.isEmpty(sport)) && !TextUtils.isEmpty(maxParticipantsString) && !TextUtils.isEmpty(timeString)) {
+            if (privateTournament) {
+                //Private tournament
+                code = mCode.getText().toString().trim();
+                if (TextUtils.isEmpty(code)) {
+                    Toast.makeText(getContext(), R.string.code_empty, Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
-        }
-        if (!isValidData) {
+            long time, currentTime = System.currentTimeMillis();
+            String[] splitTime = timeString.split(":");
+            Date date = new Date(System.currentTimeMillis());
+            date.setHours(Integer.parseInt(splitTime[0]));
+            date.setMinutes(Integer.parseInt(splitTime[1]));
+            time = date.getTime();
+            Log.e("mimi", date.toGMTString()+ "\t" + date.getHours()+"\t" +date.getMinutes());
+            Log.e("aqaqaqaqa", time + "\n" + currentTime);
+            if (time - currentTime <= 0) {
+                //Check time
+                Toast.makeText(getContext(), R.string.time_not_valid, Toast.LENGTH_LONG).show();
+                return;
+            }
+            int maxParticipants = Integer.parseInt(maxParticipantsString);
+            if (maxParticipants < 2) {
+                //Check participants
+                Toast.makeText(getContext(), R.string.max_palyer_not_valid, Toast.LENGTH_LONG).show();
+                return;
+            }
+            String username = MainActivity.CurrentUser.getDisplayName();
+            TournamentInfo tournamentInfo = new TournamentInfo(city, place, sport, time, maxParticipants, privateTournament, code, username);
+            uploadTournament(tournamentInfo);
+        } else
             Toast.makeText(getContext(), R.string.not_valid, Toast.LENGTH_LONG).show();
-        }
     }
 
     private void uploadTournament(final TournamentInfo tournamentInfo) {
         mProgressDialog.show();
         Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat dateFormater = new SimpleDateFormat("dd.MM.yyyy");
-        final String newDateStr = dateFormater.format(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        final String newDateStr = dateFormat.format(date);
         final String key = System.currentTimeMillis() + "";
         mCollectionReferenceEventCurrentUser.document(MainActivity.CurrentUser.getDisplayName()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -163,9 +171,9 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         final UserData userData = documentSnapshot.toObject(UserData.class);
                         userData.setmEvent(key);
-                        mCollectionReferenceEvent.document("city").collection(tournamentInfo.getmCity())
-                                .document("sport").collection(tournamentInfo.getmSport())
-                                .document("date").collection(newDateStr)
+                        mCollectionReferenceEvent.document(CITY).collection(tournamentInfo.getmCity())
+                                .document(SPORT).collection(tournamentInfo.getmSport())
+                                .document(DATE).collection(newDateStr)
                                 .document(key).set(tournamentInfo)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10"
+    android:weightSum="15"
     tools:context=".Tournament.SearchTournamentFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:foregroundGravity="center"
         android:layout_weight="2"
+        android:foregroundGravity="center"
         android:gravity="center"
         android:text="@string/search_tournament"
         android:textAllCaps="false"
@@ -47,8 +47,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="35dp"
+            android:layout_marginEnd="20dp"
             android:layout_toEndOf="@+id/city_search_text"
             android:background="@drawable/edit_text_style"
             android:ems="10"
@@ -91,12 +91,31 @@
             android:inputType="textPersonName" />
     </RelativeLayout>
 
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="4">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8">
 
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tournament_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:layout_weight="8">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/search_for_tournament"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
