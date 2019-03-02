@@ -57,4 +57,11 @@
     <string name="max_palyer_not_valid">The max player need to be bigger than 1</string>
     <string name="code_empty">You need to fill in the code for private tournament</string>
     <string name="is_private">Private</string>
+    <string name="tournament_full">This tournament is full</string>
+    <string name="is_private_tournament">This is private tournament</string>
+    <string name="enter_private_code">Enter private code</string>
+    <string name="ok">OK</string>
+    <string name="empty_code">Please enter the code of the tournament</string>
+    <string name="invalid_code">Wrong code</string>
+    <string name="is_public">Public</string>
 </resources>

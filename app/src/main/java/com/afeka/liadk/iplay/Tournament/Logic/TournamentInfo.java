@@ -1,11 +1,12 @@
 package com.afeka.liadk.iplay.Tournament.Logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by liadk
  */
-public class TournamentInfo {
+public class TournamentInfo implements Serializable {
     private String mCity, mPlace, mSport, mCode;
     private boolean mPrivate;
     private String mCreatorUsername;

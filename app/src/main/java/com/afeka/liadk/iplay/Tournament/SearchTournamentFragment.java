@@ -3,7 +3,9 @@ package com.afeka.liadk.iplay.Tournament;
  *Created by liadk
  */
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class SearchTournamentFragment extends Fragment implements View.OnClickListener, CloudFirestoreConst {
+public class SearchTournamentFragment extends Fragment implements View.OnClickListener, TournamentRecyclerViewAdapter.ItemClickListener, CloudFirestoreConst {
 
     private EditText mCity, mSport;
     private RecyclerView mRecyclerView;
@@ -46,6 +49,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
     private TournamentRecyclerViewAdapter mAdapter;
     private TextView mWaitForResultTournament;
     private List<DocumentSnapshot> mDocuments;
+    private TournamentRecyclerViewAdapter.ItemClickListener mItemClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +68,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mItemClickListener = this;
         return view;
     }
 
@@ -100,6 +105,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
                     mDocuments = queryDocumentSnapshots.getDocuments();
                     removeOldEvent();
                     mAdapter = new TournamentRecyclerViewAdapter(getContext(), mDocuments);
+                    mAdapter.setClickListener(mItemClickListener);
                     mRecyclerView.setAdapter(mAdapter);
                     if (mDocuments.size() == 0) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -140,5 +146,53 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
                 }
             }
         }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        final TournamentInfo tournamentInfo = mDocuments.get(position).toObject(TournamentInfo.class);
+        if (tournamentInfo.getPlayers() >= tournamentInfo.getmMaxParticipants()) {
+            Toast.makeText(getContext(), R.string.tournament_full, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (tournamentInfo.ismPrivate()) {
+            final EditText editTextCode = new EditText(getContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(10,10,10,10);
+            editTextCode.setLayoutParams(params);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+            builder.setView(editTextCode).setTitle(R.string.is_private_tournament).setMessage(R.string.enter_private_code)
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (editTextCode.getText().length() != 0) {
+                        if (editTextCode.getText().toString().compareTo(tournamentInfo.getmCode()) == 0) {
+                            changeToTournamentInfo(tournamentInfo);
+                        } else {
+                            Toast.makeText(getContext(), R.string.invalid_code, Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), R.string.empty_code, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }).create().show();
+        } else {
+            changeToTournamentInfo(tournamentInfo);
+        }
+    }
+
+    private void changeToTournamentInfo(TournamentInfo tournamentInfo) {
+        Fragment tournamentDataFragment = new TournamentDataFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TournamentDataFragment.JOIN_TOURNAMENT, tournamentInfo);
+        tournamentDataFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.tournament_layout, tournamentDataFragment).addToBackStack(null).commit();
     }
 }

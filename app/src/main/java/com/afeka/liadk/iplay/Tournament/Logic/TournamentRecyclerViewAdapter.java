@@ -18,12 +18,22 @@ import java.util.List;
  * Created by liadk
  */
 public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<TournamentRecyclerViewAdapter.ViewHolder> {
+
     private List<DocumentSnapshot> mData;
     private LayoutInflater mInflater;
+    private ItemClickListener mClickListener;
 
     public TournamentRecyclerViewAdapter(Context context, List<DocumentSnapshot> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     @NonNull
@@ -43,8 +53,14 @@ public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<Tourname
         else
             viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes());
         viewHolder.mPlayers.setText(tournamentInfo.getPlayers() + "/" + tournamentInfo.getmMaxParticipants());
-        if (tournamentInfo.ismPrivate())
+        if (tournamentInfo.ismPrivate()) {
             viewHolder.mPrivate.setText(R.string.is_private);
+            viewHolder.mPrivate.setTextColor(mInflater.getContext().getResources().getColor(android.R.color.holo_red_dark));
+        } else {
+            viewHolder.mPrivate.setText(R.string.is_public);
+            viewHolder.mPrivate.setTextColor(mInflater.getContext().getResources().getColor(android.R.color.holo_green_dark));
+        }
+
     }
 
     @Override
@@ -61,11 +77,12 @@ public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<Tourname
             mTime = itemView.findViewById(R.id.time_of_tournament);
             mPrivate = itemView.findViewById(R.id.tournament_is_private);
             mPlayers = itemView.findViewById(R.id.current_tournament_players);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }

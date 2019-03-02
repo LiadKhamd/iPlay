@@ -93,13 +93,6 @@
         android:layout_weight="7"
         android:background="@drawable/border">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/tournament_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
-
         <TextView
             android:id="@+id/result_tournament_search"
             android:layout_width="match_parent"
@@ -109,6 +102,14 @@
             android:textColor="@color/colorAccent"
             android:textSize="30sp"
             android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tournament_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
     </RelativeLayout>
 
 

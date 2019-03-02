@@ -182,10 +182,13 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                                 mProgressDialog.cancel();
                                                 Toast.makeText(getContext(), R.string.tournament_has_create, Toast.LENGTH_LONG).show();
                                                 getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                                Fragment registeredTournament = new RegisteredTournamentFragment();
+                                                Fragment tournamentDataFragment = new TournamentDataFragment();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable(TournamentDataFragment.REGISTERED, tournamentInfo);
+                                                tournamentDataFragment.setArguments(bundle);
                                                 getActivity().getSupportFragmentManager().beginTransaction()
                                                         .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                                                        .replace(R.id.tournament_layout, registeredTournament).commit();
+                                                        .replace(R.id.tournament_layout, tournamentDataFragment).commit();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
