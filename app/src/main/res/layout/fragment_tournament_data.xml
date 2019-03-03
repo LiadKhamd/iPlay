@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
+        android:layout_marginTop="8dp"
         android:layout_weight="2"
         android:foregroundGravity="center"
         android:gravity="center"
@@ -24,8 +25,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        android:layout_weight="8">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.5"
+                android:gravity="center"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -45,25 +47,33 @@
                 android:id="@+id/place_data_tournament"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/sport_data_tournament"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/time_data_tournament"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/participates_data_tournament"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp" />
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -80,11 +90,10 @@
         android:layout_weight="1.5">
 
         <Button
-            android:id="@+id/cancel_tournament_button"
+            android:id="@+id/join_or_cancel_tournament_button"
             android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/button_style"
             android:textColor="@color/white" />
 
     </RelativeLayout>

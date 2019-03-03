@@ -36,6 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
     private CollectionReference mCollectionReferenceEvent;
     private TournamentRecyclerViewAdapter mAdapter;
     private TextView mWaitForResultTournament;
-    private List<DocumentSnapshot> mDocuments;
+    private List<TournamentInfo> mDocuments;
     private TournamentRecyclerViewAdapter.ItemClickListener mItemClickListener;
 
     @Override
@@ -102,8 +103,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
             }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    mDocuments = queryDocumentSnapshots.getDocuments();
-                    removeOldEvent();
+                    mDocuments = removeOldEvent(queryDocumentSnapshots.getDocuments());
                     mAdapter = new TournamentRecyclerViewAdapter(getContext(), mDocuments);
                     mAdapter.setClickListener(mItemClickListener);
                     mRecyclerView.setAdapter(mAdapter);
@@ -133,24 +133,26 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         }
     }
 
-    private void removeOldEvent() {
-        if (mDocuments != null && mDocuments.size() >= 0) {
+    private ArrayList<TournamentInfo> removeOldEvent(List<DocumentSnapshot> list) {
+        ArrayList<TournamentInfo> tournamentInfos = new ArrayList<>();
+        if (list != null && list.size() >= 0) {
             TournamentInfo tournamentInfo;
             Date tournamentDate, currentDate;
-            for (int i = 0; i < mDocuments.size(); i++) {
-                tournamentInfo = mDocuments.get(i).toObject(TournamentInfo.class);
+            for (int i = 0; i < list.size(); i++) {
+                tournamentInfo = list.get(i).toObject(TournamentInfo.class);
                 tournamentDate = new Date(tournamentInfo.getmTime());
                 currentDate = new Date(System.currentTimeMillis());
-                if (tournamentDate.compareTo(currentDate) <= 0) {
-                    mDocuments.remove(i--);
+                if (tournamentDate.compareTo(currentDate) > 0) {
+                    tournamentInfos.add(tournamentInfo);
                 }
             }
         }
+        return tournamentInfos;
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        final TournamentInfo tournamentInfo = mDocuments.get(position).toObject(TournamentInfo.class);
+        final TournamentInfo tournamentInfo = mDocuments.get(position);
         if (tournamentInfo.getPlayers() >= tournamentInfo.getmMaxParticipants()) {
             Toast.makeText(getContext(), R.string.tournament_full, Toast.LENGTH_LONG).show();
             return;
@@ -158,7 +160,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         if (tournamentInfo.ismPrivate()) {
             final EditText editTextCode = new EditText(getContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10,10,10,10);
+            params.setMargins(10, 10, 10, 10);
             editTextCode.setLayoutParams(params);
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
             builder.setView(editTextCode).setTitle(R.string.is_private_tournament).setMessage(R.string.enter_private_code)
@@ -189,7 +191,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
     private void changeToTournamentInfo(TournamentInfo tournamentInfo) {
         Fragment tournamentDataFragment = new TournamentDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(TournamentDataFragment.JOIN_TOURNAMENT, tournamentInfo);
+        bundle.putSerializable(TournamentDataFragment.REVIEW_TOURNAMENT, tournamentInfo);
         tournamentDataFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)

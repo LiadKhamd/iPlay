@@ -12,13 +12,13 @@ public class TournamentInfo implements Serializable {
     private String mCreatorUsername;
     private ArrayList<String> mParticipantsUsersnames;
     private int mMaxParticipants;
-    private long mTime;
+    private long mTime, mKey;
 
     public TournamentInfo() {
 
     }
 
-    public TournamentInfo(String mCity, String mPlace, String mSport, long mTime, int mMaxParticipants, boolean mPrivate, String mCode, String mCreatorUsername) {
+    public TournamentInfo(String mCity, String mPlace, String mSport, long mTime, int mMaxParticipants, boolean mPrivate, String mCode, String mCreatorUsername, long key) {
         this.mCity = mCity;
         this.mPlace = mPlace;
         this.mSport = mSport;
@@ -29,6 +29,7 @@ public class TournamentInfo implements Serializable {
         this.mMaxParticipants = mMaxParticipants;
         mParticipantsUsersnames = new ArrayList<>();
         mParticipantsUsersnames.add(mCreatorUsername);
+        this.mKey = key;
     }
 
     public String getmCity() {
@@ -110,5 +111,13 @@ public class TournamentInfo implements Serializable {
 
     public int getPlayers() {
         return mParticipantsUsersnames.size();
+    }
+
+    public long getmKey() {
+        return mKey;
+    }
+
+    public void setmKey(long mKey) {
+        this.mKey = mKey;
     }
 }

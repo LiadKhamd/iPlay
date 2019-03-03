@@ -8,4 +8,6 @@
     <color name="editText">#EBEBEB</color>
     <color name="mailColorStart">#DA4453</color>
     <color name="mailColorEnd">#89216B</color>
+    <color name="join">#009688</color>
+    <color name="deleteOrLeave">#F44336</color>
 </resources>

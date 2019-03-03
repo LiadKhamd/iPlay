@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<TournamentRecyclerViewAdapter.ViewHolder> {
 
-    private List<DocumentSnapshot> mData;
+    private List<TournamentInfo> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public TournamentRecyclerViewAdapter(Context context, List<DocumentSnapshot> data) {
+    public TournamentRecyclerViewAdapter(Context context, List<TournamentInfo> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -45,10 +45,10 @@ public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<Tourname
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        TournamentInfo tournamentInfo = mData.get(position).toObject(TournamentInfo.class);
+        TournamentInfo tournamentInfo = mData.get(position);
         viewHolder.mPlace.setText(tournamentInfo.getmPlace());
         Date date = new Date(tournamentInfo.getmTime());
-        if (date.getMinutes() < 10 || date.getMinutes() == 0)
+        if (date.getMinutes() < 10)
             viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes() + "0");
         else
             viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes());

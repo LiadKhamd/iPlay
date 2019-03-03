@@ -54,7 +54,7 @@
     <string name="search_for_tournament">Find your results here</string>
     <string name="result_not_found">Sorry not tournament has found</string>
     <string name="time_not_valid">Time is not valid for today</string>
-    <string name="max_palyer_not_valid">The max player need to be bigger than 1</string>
+    <string name="max_player_not_valid">The max player need to be bigger than 1</string>
     <string name="code_empty">You need to fill in the code for private tournament</string>
     <string name="is_private">Private</string>
     <string name="tournament_full">This tournament is full</string>
@@ -64,4 +64,11 @@
     <string name="empty_code">Please enter the code of the tournament</string>
     <string name="invalid_code">Wrong code</string>
     <string name="is_public">Public</string>
+    <string name="delete">Delete</string>
+    <string name="leave">Leave</string>
+    <string name="join_tournament">Join to tournament</string>
+    <string name="join">Join</string>
+    <string name="players">Players</string>
+    <string name="tournament_has_deleted">Tournament has deleted</string>
+    <string name="delete_this_tournament">Do you sure?</string>
 </resources>

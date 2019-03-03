@@ -74,7 +74,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (minute < 10 || minute == 0)
+                                        if (minute < 10)
                                             mTime.setText(hourOfDay + ":" + "0" + minute);
                                         else
                                             mTime.setText(hourOfDay + ":" + minute);
@@ -146,11 +146,11 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
             int maxParticipants = Integer.parseInt(maxParticipantsString);
             if (maxParticipants < 2) {
                 //Check participants
-                Toast.makeText(getContext(), R.string.max_palyer_not_valid, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.max_player_not_valid, Toast.LENGTH_LONG).show();
                 return;
             }
             String username = MainActivity.CurrentUser.getDisplayName();
-            TournamentInfo tournamentInfo = new TournamentInfo(city, place, sport, time, maxParticipants, privateTournament, code, username);
+            TournamentInfo tournamentInfo = new TournamentInfo(city, place, sport, time, maxParticipants, privateTournament, code, username, System.currentTimeMillis());
             uploadTournament(tournamentInfo);
         } else
             Toast.makeText(getContext(), R.string.not_valid, Toast.LENGTH_LONG).show();
@@ -161,17 +161,16 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         final String newDateStr = dateFormat.format(date);
-        final String key = System.currentTimeMillis() + "";
         mCollectionReferenceEventCurrentUser.document(MainActivity.CurrentUser.getDisplayName()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         final UserData userData = documentSnapshot.toObject(UserData.class);
-                        userData.setmEvent(key);
+                        userData.setmEvent(tournamentInfo.getmKey() + "");
                         mCollectionReferenceEvent.document(CITY).collection(tournamentInfo.getmCity())
                                 .document(SPORT).collection(tournamentInfo.getmSport())
                                 .document(DATE).collection(newDateStr)
-                                .document(key).set(tournamentInfo)
+                                .document(tournamentInfo.getmKey() + "").set(tournamentInfo)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
