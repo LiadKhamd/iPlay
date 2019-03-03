@@ -74,5 +74,7 @@
     <string name="is_look_like_tournament_full">It\'s look like this tournament is full, next time be faster</string>
     <string name="add_success">You join to this tournament</string>
     <string name="already_register">You already register to this tournament</string>
+    <string name="is_look_like_tournament_delete">The tournament has deleted</string>
+    <string name="you_leave_tournament">You had leave the tournament</string>
 
 </resources>

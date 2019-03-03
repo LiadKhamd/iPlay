@@ -134,4 +134,9 @@ public class TournamentInfo implements Serializable {
         }
         return false;
     }
+
+    public void removeMe() {
+        String username = MainActivity.CurrentUser.getDisplayName();
+        mParticipantsUsersnames.remove(username);
+    }
 }

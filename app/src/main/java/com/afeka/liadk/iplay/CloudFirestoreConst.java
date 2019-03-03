@@ -1,10 +1,11 @@
-package com.afeka.liadk.iplay.Tournament.Logic;
+package com.afeka.liadk.iplay;
 
 /**
  * Created by liadk
  */
 public interface CloudFirestoreConst {
 
+    final String USERS= "users";
     final String CITY = "city";
     final String SPORT ="sport";
     final String DATE ="date";

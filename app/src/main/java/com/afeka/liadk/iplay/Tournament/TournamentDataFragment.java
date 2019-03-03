@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afeka.liadk.iplay.CloudFirestoreConst;
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.Tournament.Logic.CloudFirestoreConst;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
+import com.afeka.liadk.iplay.Tournament.Logic.UserTournamentRegister;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
@@ -66,7 +68,8 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
                 }
             }
         } else {
-            ///////////////////////////TO DO
+            Fragment menuFragment = new TournamentMenuFragment();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
         }
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
         mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
@@ -159,7 +162,79 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
     }
 
     private void leaveTournament() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AlertDialogTheme);
+        builder.setTitle(R.string.leave).setMessage(R.string.delete_this_tournament)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
+                    }
+                }).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mProgressDialog.show();
+                mTournamentInfo.removeMe();
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("mParticipantsUsersnames", mTournamentInfo.getmParticipantsUsersnames());
+                Date date = new Date(System.currentTimeMillis());
+                SimpleDateFormat dateFormater = new SimpleDateFormat(DATE_FORMAT);
+                String newDateStr = dateFormater.format(date);
+                FirebaseFirestore.getInstance().collection(EVENT)
+                        .document(CITY).collection(mTournamentInfo.getmCity())
+                        .document(SPORT).collection(mTournamentInfo.getmSport())
+                        .document(DATE).collection(newDateStr)
+                        .document(mTournamentInfo.getmKey() + "").update(updates)
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception ex) {
+                                mProgressDialog.cancel();
+                                try {
+                                    throw ex;
+                                } catch (FirebaseNetworkException e) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                } catch (FirebaseFirestoreException e) {
+                                    Toast.makeText(getContext(), R.string.is_look_like_tournament_delete, Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Map<String, Object> updatesMe = new HashMap<>();
+                        updatesMe.put("mEvent", null);
+                        FirebaseFirestore.getInstance().collection(USERS)
+                                .document(MainActivity.CurrentUser.getDisplayName()).update(updatesMe)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        mProgressDialog.cancel();
+                                        Toast.makeText(getContext(), R.string.you_leave_tournament, Toast.LENGTH_LONG).show();
+                                        Fragment tournamentMenu = new TournamentMenuFragment();
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                                                .replace(R.id.tournament_layout, tournamentMenu).commit();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception ex) {
+                                mProgressDialog.cancel();
+                                try {
+                                    throw ex;
+                                } catch (FirebaseNetworkException e) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                } catch (FirebaseFirestoreException e) {
+                                    Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }).create().show();
     }
 
 
@@ -193,17 +268,42 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
                 }).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        mProgressDialog.cancel();
-                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_LONG).show();
-                        getActivity().runOnUiThread(new Runnable() {
+                        Map<String, Object> updatesMe = new HashMap<>();
+                        updatesMe.put("mEvent", new UserTournamentRegister(mTournamentInfo.getmCity(), mTournamentInfo.getmSport(), mTournamentInfo.getmKey() + ""));
+                        FirebaseFirestore.getInstance().collection(USERS)
+                                .document(MainActivity.CurrentUser.getDisplayName()).update(updatesMe)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        mProgressDialog.cancel();
+                                        getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_LONG).show();
+                                        Fragment tournamentDataFragment = new TournamentDataFragment();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable(TournamentDataFragment.REGISTERED, mTournamentInfo);
+                                        tournamentDataFragment.setArguments(bundle);
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                                                .replace(R.id.tournament_layout, tournamentDataFragment).commit();
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void run() {
-                                registeredToTournament();
+                            public void onFailure(@NonNull Exception ex) {
+                                mProgressDialog.cancel();
+                                try {
+                                    throw ex;
+                                } catch (FirebaseNetworkException e) {
+                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                } catch (FirebaseFirestoreException e) {
+                                    Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                     }
                 });
-
             } else {
                 Toast.makeText(getContext(), R.string.already_register, Toast.LENGTH_LONG).show();
             }

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
+import com.afeka.liadk.iplay.CloudFirestoreConst;
 import com.afeka.liadk.iplay.Tournament.TournamentActivity;
 import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,7 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class NewUserFragment extends Fragment {
+public class NewUserFragment extends Fragment implements CloudFirestoreConst {
 
     private EditText mUserName;
     private CollectionReference mCollectionReference;
@@ -39,7 +40,7 @@ public class NewUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_user, container, false);
         mUserName = view.findViewById(R.id.username_edit_text);
-        mCollectionReference = FirebaseFirestore.getInstance().collection("users");
+        mCollectionReference = FirebaseFirestore.getInstance().collection(USERS);
         view.findViewById(R.id.next_profile_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

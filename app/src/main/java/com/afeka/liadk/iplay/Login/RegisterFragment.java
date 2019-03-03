@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
         mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
         mProgressDialog.setCancelable(false);
-
         view.findViewById(R.id.register_button).setOnClickListener(this);
         return view;
     }
@@ -67,6 +67,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                 MainActivity.CurrentUser = MainActivity.firebaseAuth.getCurrentUser();
                                 MainActivity.CurrentUser.sendEmailVerification();
                                 Fragment mailVerFrag = new MailVerificationFragment();
+                                getActivity().getSupportFragmentManager().popBackStack(null,
+                                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                 getActivity().getSupportFragmentManager().beginTransaction().
                                         setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                                         .replace(R.id.main_login, mailVerFrag).commit();

@@ -1,11 +1,14 @@
 package com.afeka.liadk.iplay.UserProfile.Logic;
 
+import com.afeka.liadk.iplay.Tournament.Logic.UserTournamentRegister;
+
 /*
  * Created by liadk
  */
 public class UserData {
 
-    private String mUserUID, mEvent;
+    private String mUserUID;
+    private UserTournamentRegister mEvent;
 
     public UserData() {
 
@@ -20,15 +23,15 @@ public class UserData {
         return mUserUID;
     }
 
-    public String getmEvent() {
-        return mEvent;
-    }
-
     public void setmUserUID(String mUserUID) {
         this.mUserUID = mUserUID;
     }
 
-    public void setmEvent(String mEvent) {
-        this.mEvent = mEvent;
+    public UserTournamentRegister getmEvent() {
+        return mEvent;
+    }
+
+    public void setmEvent(String mCity, String mSport, String mEventKey) {
+        this.mEvent = new UserTournamentRegister(mCity, mSport, mEventKey);
     }
 }

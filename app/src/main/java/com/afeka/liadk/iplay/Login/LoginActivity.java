@@ -33,13 +33,4 @@ public class LoginActivity extends AppCompatActivity {
                     .replace(R.id.main_login, loginFrag).commit();
         }
     }
-
-//    public static AlertDialog.Builder createDialog(Context context, int message) {//Create dialog with theme
-//        return new AlertDialog.Builder(context, R.style.AlertDialogTheme).setMessage(context.getString(message));
-//    }
-
-//    public static int createCustomTransaction(Context context, Fragment fragment) {//Create default transaction
-//        return ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().
-//                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.main_login, fragment).addToBackStack(null).commit();
-//    }
 }

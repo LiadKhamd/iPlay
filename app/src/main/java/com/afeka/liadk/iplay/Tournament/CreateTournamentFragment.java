@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.Tournament.Logic.CloudFirestoreConst;
+import com.afeka.liadk.iplay.CloudFirestoreConst;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
 import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,7 +65,6 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 Date currentTime = Calendar.getInstance().getTime();
-
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),
                         new TimePickerDialog.OnTimeSetListener() {
 
@@ -88,8 +87,8 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
         mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
         mProgressDialog.setCancelable(false);
-        mCollectionReferenceEvent = FirebaseFirestore.getInstance().collection("events");
-        mCollectionReferenceEventCurrentUser = FirebaseFirestore.getInstance().collection("users");
+        mCollectionReferenceEvent = FirebaseFirestore.getInstance().collection(EVENT);
+        mCollectionReferenceEventCurrentUser = FirebaseFirestore.getInstance().collection(USERS);
         mPrivateRelativeLayout = view.findViewById(R.id.private_tournament_layout);
         mPrivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -166,7 +165,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         final UserData userData = documentSnapshot.toObject(UserData.class);
-                        userData.setmEvent(tournamentInfo.getmKey() + "");
+                        userData.setmEvent(tournamentInfo.getmCity(), tournamentInfo.getmSport(), tournamentInfo.getmKey() + "");
                         mCollectionReferenceEvent.document(CITY).collection(tournamentInfo.getmCity())
                                 .document(SPORT).collection(tournamentInfo.getmSport())
                                 .document(DATE).collection(newDateStr)

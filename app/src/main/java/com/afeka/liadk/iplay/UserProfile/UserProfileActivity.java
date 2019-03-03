@@ -19,8 +19,8 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         Intent intent = getIntent();
-        Bundle noMailVerifiedBundle = intent.getBundleExtra(FIRST_TIME);
-        if (noMailVerifiedBundle != null) {//Create new user
+        Bundle firstTime = intent.getBundleExtra(FIRST_TIME);
+        if (firstTime != null) {//Create new user
             Fragment newUser = new NewUserFragment();
             getSupportFragmentManager().beginTransaction().
                     setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
