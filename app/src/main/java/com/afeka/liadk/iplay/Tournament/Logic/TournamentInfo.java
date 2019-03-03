@@ -1,5 +1,7 @@
 package com.afeka.liadk.iplay.Tournament.Logic;
 
+import com.afeka.liadk.iplay.MainActivity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -119,5 +121,17 @@ public class TournamentInfo implements Serializable {
 
     public void setmKey(long mKey) {
         this.mKey = mKey;
+    }
+
+    public boolean addMe() {
+        if (mParticipantsUsersnames.size() < mMaxParticipants) {
+            String username = MainActivity.CurrentUser.getDisplayName();
+            if (!mParticipantsUsersnames.contains(username)) {
+                mParticipantsUsersnames.add(username);
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }

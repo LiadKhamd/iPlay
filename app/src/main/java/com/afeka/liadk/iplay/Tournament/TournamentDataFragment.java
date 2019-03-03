@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class TournamentDataFragment extends Fragment implements CloudFirestoreConst {
@@ -144,18 +146,70 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
         }).create().show();
     }
 
-    private void leaveTournament() {
-
-    }
-
     private void reviewTournament() {
         mTitle.setText(R.string.join_tournament);
         mButton.setBackground(getResources().getDrawable(R.drawable.button_join_style));
         mButton.setText(R.string.join);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                joinToTournament();
+            }
+        });
     }
 
-    private void joinToTournament() {
+    private void leaveTournament() {
 
+    }
+
+
+    private void joinToTournament() {
+        if (mTournamentInfo.getPlayers() < mTournamentInfo.getmMaxParticipants()) {
+            if (mTournamentInfo.addMe()) {
+                mProgressDialog.show();
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("mParticipantsUsersnames", mTournamentInfo.getmParticipantsUsersnames());
+                Date date = new Date(System.currentTimeMillis());
+                SimpleDateFormat dateFormater = new SimpleDateFormat(DATE_FORMAT);
+                String newDateStr = dateFormater.format(date);
+                FirebaseFirestore.getInstance().collection(EVENT)
+                        .document(CITY).collection(mTournamentInfo.getmCity())
+                        .document(SPORT).collection(mTournamentInfo.getmSport())
+                        .document(DATE).collection(newDateStr)
+                        .document(mTournamentInfo.getmKey() + "").update(updates).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception ex) {
+                        mProgressDialog.cancel();
+                        try {
+                            throw ex;
+                        } catch (FirebaseNetworkException e) {
+                            Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                        } catch (FirebaseFirestoreException e) {
+                            Toast.makeText(getContext(), R.string.is_look_like_tournament_full, Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        mProgressDialog.cancel();
+                        Toast.makeText(getContext(), R.string.add_success, Toast.LENGTH_LONG).show();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                registeredToTournament();
+                            }
+                        });
+                    }
+                });
+
+            } else {
+                Toast.makeText(getContext(), R.string.already_register, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getContext(), R.string.tournament_full, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void setTournamentData() {

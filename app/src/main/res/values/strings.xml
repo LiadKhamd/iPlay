@@ -48,7 +48,7 @@
     <string name="create">Create</string>
     <string name="search">Search</string>
     <string name="not_valid">You need to fill in all the form</string>
-    <string name="tournament_has_create">You tournament has been created</string>
+    <string name="tournament_has_create">Your tournament has been created</string>
     <string name="registered_tournament">Registered Tournament</string>
     <string name="problem_loading_tournament">Loading</string>
     <string name="search_for_tournament">Find your results here</string>
@@ -71,4 +71,8 @@
     <string name="players">Players</string>
     <string name="tournament_has_deleted">Tournament has deleted</string>
     <string name="delete_this_tournament">Do you sure?</string>
+    <string name="is_look_like_tournament_full">It\'s look like this tournament is full, next time be faster</string>
+    <string name="add_success">You join to this tournament</string>
+    <string name="already_register">You already register to this tournament</string>
+
 </resources>
