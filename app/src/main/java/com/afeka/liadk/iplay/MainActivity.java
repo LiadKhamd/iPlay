@@ -3,10 +3,16 @@ package com.afeka.liadk.iplay;
  *Created by liadk
  */
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afeka.liadk.iplay.Login.LoginActivity;
@@ -18,6 +24,7 @@ import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.afeka.liadk.iplay.UserProfile.UserProfileActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,6 +37,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements CloudFirestoreConst {
 
+    public static final int REQUEST_CODE_READ = 102;
+    public static final int REQUEST_CODE_WRITE = 103;
     final int SPLASH_TIME_OUT = 500;
 
     public static FirebaseAuth firebaseAuth;
@@ -51,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements CloudFirestoreCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this);
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -167,5 +177,37 @@ public class MainActivity extends AppCompatActivity implements CloudFirestoreCon
 
     public static void logout() {
         firebaseAuth.signOut();
+    }
+
+    public static boolean checkPermission(final Activity activity, final String permission, final int message, final int requsetCode) {
+        if (ContextCompat.checkSelfPermission(activity, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    permission)) {
+                new AlertDialog.Builder(activity, R.style.AlertDialogTheme).setTitle(R.string.storage_access).setMessage(activity.getString(message))
+                        .setPositiveButton(activity.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ActivityCompat.requestPermissions(activity,
+                                        new String[]{permission},
+                                        requsetCode);
+                            }
+                        }).setNegativeButton(activity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).show();
+            } else {
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{permission},
+                        requsetCode);
+            }
+            return false;
+        } else {
+            // Permission has already been granted
+            return true;
+        }
     }
 }

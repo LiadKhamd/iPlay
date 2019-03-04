@@ -80,4 +80,8 @@
     <string name="delimiter">:</string>
     <string name="title_gps">GPS</string>
     <string name="message_gps">This apps need your gps location to set your city</string>
+    <string name="proflie_image">Profile image</string>
+    <string name="write_permission">The app need to permission to write your proflie picture</string>
+    <string name="read_permission">The app need permission to read your proflie image from the phone</string>
+    <string name="storage_access">Storage access</string>
 </resources>

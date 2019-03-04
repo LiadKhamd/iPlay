@@ -26,12 +26,12 @@ public class UserProfileActivity extends AppCompatActivity {
                     setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.user_profile, newUser)
                     .commit();
-        } else {//Set login page fragment
-//            Fragment updateProfile = new updateProfileFragment();
-//            getSupportFragmentManager().beginTransaction().
-//                    setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-//                    .replace(R.id.user_profile, updateProfile)
-//                        .commit();
+        } else {
+            Fragment updateProfileImage = new UserImageProfileFragment();
+            getSupportFragmentManager().beginTransaction().
+                    setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.user_profile, updateProfileImage)
+                        .commit();
         }
     }
 }
