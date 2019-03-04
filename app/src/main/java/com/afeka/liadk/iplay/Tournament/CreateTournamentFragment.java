@@ -21,9 +21,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.afeka.liadk.iplay.CloudFirestoreConst;
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.CloudFirestoreConst;
+import com.afeka.liadk.iplay.Tournament.Logic.LocationProvider;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
 import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,7 +40,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class CreateTournamentFragment extends Fragment implements View.OnClickListener, CloudFirestoreConst {
+public class CreateTournamentFragment extends Fragment implements View.OnClickListener, CloudFirestoreConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
+
+    public final int REQUEST_CODE_GPS = 2;
 
     private EditText mCity, mPlace, mSport, mMaxParticipants, mCode;
     private TextView mTime;
@@ -47,13 +50,14 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
     private RelativeLayout mPrivateRelativeLayout;
     private ProgressDialog mProgressDialog;
     private CollectionReference mCollectionReferenceEventCurrentUser, mCollectionReferenceEvent;
-
+    private LocationProvider mLocationProvider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_tournament, container, false);
         mCity = view.findViewById(R.id.city_tournament);
+        mLocationProvider = new LocationProvider(this, getActivity());
         mPlace = view.findViewById(R.id.place_tournament);
         mSport = view.findViewById(R.id.sport_tournament);
         mTime = view.findViewById(R.id.time_tournament);
@@ -109,6 +113,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                 }
             }
         });
+        ((TournamentActivity) getActivity()).requestLocation(this);
         return view;
     }
 
@@ -237,5 +242,25 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                 }
             }
         });
+    }
+
+    @Override
+    public void myCityName(final String cityName) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mCity.setText(cityName);
+            }
+        });
+    }
+
+    @Override
+    public boolean checkPermission() {
+        return ((TournamentActivity) getActivity()).checkPermissionLocation();
+    }
+
+    @Override
+    public void listenerToLocation() {
+        mLocationProvider.startSearchLocation();
     }
 }

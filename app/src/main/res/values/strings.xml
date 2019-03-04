@@ -78,4 +78,6 @@
     <string name="you_leave_tournament">You had leave the tournament</string>
     <string name="tournament_end">This tournament start now</string>
     <string name="delimiter">:</string>
+    <string name="title_gps">GPS</string>
+    <string name="message_gps">This apps need your gps location to set your city</string>
 </resources>

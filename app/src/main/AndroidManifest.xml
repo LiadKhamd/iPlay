@@ -2,17 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afeka.liadk.iplay">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.location.gps" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:testOnly="true"
+        android:testOnly="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".Tournament.TournamentActivity"></activity>
-        <activity android:name=".UserProfile.UserProfileActivity" />
-        <activity android:name=".Login.LoginActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Tournament.TournamentActivity" />
+        <activity android:name=".UserProfile.UserProfileActivity" />
+        <activity android:name=".Login.LoginActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

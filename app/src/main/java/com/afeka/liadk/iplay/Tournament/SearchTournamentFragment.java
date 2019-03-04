@@ -22,8 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.CloudFirestoreConst;
+import com.afeka.liadk.iplay.R;
+import com.afeka.liadk.iplay.Tournament.Logic.LocationProvider;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentRecyclerViewAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,7 +42,9 @@ import java.util.Date;
 import java.util.List;
 
 
-public class SearchTournamentFragment extends Fragment implements View.OnClickListener, TournamentRecyclerViewAdapter.ItemClickListener, CloudFirestoreConst {
+public class SearchTournamentFragment extends Fragment implements View.OnClickListener, TournamentRecyclerViewAdapter.ItemClickListener, CloudFirestoreConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
+
+    public final int REQUEST_CODE_GPS = 1;
 
     private EditText mCity, mSport;
     private RecyclerView mRecyclerView;
@@ -51,6 +54,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
     private TextView mWaitForResultTournament;
     private List<TournamentInfo> mDocuments;
     private TournamentRecyclerViewAdapter.ItemClickListener mItemClickListener;
+    private LocationProvider mLocationProvider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +62,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_search_tournament, container, false);
         view.findViewById(R.id.search_tournament_button).setOnClickListener(this);
         mCity = view.findViewById(R.id.city_search_tournament);
+        mLocationProvider = new LocationProvider(this, getActivity());
         mSport = view.findViewById(R.id.sport_search_tournament);
         mRecyclerView = view.findViewById(R.id.tournament_recyclerView);
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
@@ -70,6 +75,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         mItemClickListener = this;
+        ((TournamentActivity) getActivity()).requestLocation(this);
         return view;
     }
 
@@ -196,5 +202,25 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.tournament_layout, tournamentDataFragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void myCityName(final String cityName) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mCity.setText(cityName);
+            }
+        });
+    }
+
+    @Override
+    public boolean checkPermission() {
+        return ((TournamentActivity) getActivity()).checkPermissionLocation();
+    }
+
+    @Override
+    public void listenerToLocation() {
+        mLocationProvider.startSearchLocation();
     }
 }
