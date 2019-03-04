@@ -25,6 +25,7 @@ import com.afeka.liadk.iplay.Tournament.Logic.UserTournamentRegister;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
@@ -36,12 +37,88 @@ import java.util.Map;
 
 public class TournamentDataFragment extends Fragment implements CloudFirestoreConst {
 
+    private final int REFRESH = 5000;
+
     public static final String REGISTERED = "REGISTERED";
     public static final String REVIEW_TOURNAMENT = "REVIEW TOURNAMENT";
+
     private TextView mTitle, mCity, mPlace, mSport, mTime, mPlayers;
     private TournamentInfo mTournamentInfo;
     private Button mButton;
     private ProgressDialog mProgressDialog;
+    private Thread mThread;
+    private boolean mThreadRefresh;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mTournamentInfo != null) {
+            mThreadRefresh = true;
+            mThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //Refresh the page in order to update tournament
+                    while (mThreadRefresh) {
+                        try {
+                            Date date = new Date(System.currentTimeMillis());
+                            SimpleDateFormat dateFormater = new SimpleDateFormat(DATE_FORMAT);
+                            String newDateStr = dateFormater.format(date);
+                            Date tournamentDate = new Date(mTournamentInfo.getmTime());
+                            if (tournamentDate.compareTo(date) > 0) {
+                                FirebaseFirestore.getInstance().
+                                        collection(EVENT)
+                                        .document(CITY).collection(mTournamentInfo.getmCity())
+                                        .document(SPORT).collection(mTournamentInfo.getmSport())
+                                        .document(DATE).collection(newDateStr)
+                                        .document(mTournamentInfo.getmKey() + "").get().addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception ex) {
+                                        try {
+                                            throw ex;
+                                        } catch (Exception e) {
+                                            Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
+                                            Fragment menuFragment = new TournamentMenuFragment();
+                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
+                                        }
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                                            mTournamentInfo = documentSnapshot.toObject(TournamentInfo.class);
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    setTournamentData();
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(getContext(), R.string.tournament_end, Toast.LENGTH_LONG).show();
+                                            Fragment menuFragment = new TournamentMenuFragment();
+                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
+                                        }
+                                    }
+                                });
+                                Thread.sleep(REFRESH);
+                            } else {
+                                Toast.makeText(getContext(), R.string.tournament_end, Toast.LENGTH_LONG).show();
+                                Fragment menuFragment = new TournamentMenuFragment();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            });
+            mThread.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mThreadRefresh = false;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +147,7 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
         } else {
             Fragment menuFragment = new TournamentMenuFragment();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
+            return view;
         }
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
         mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
@@ -282,6 +360,8 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
                                         Bundle bundle = new Bundle();
                                         bundle.putSerializable(TournamentDataFragment.REGISTERED, mTournamentInfo);
                                         tournamentDataFragment.setArguments(bundle);
+                                        getActivity().getSupportFragmentManager().popBackStack(null,
+                                                FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                         getActivity().getSupportFragmentManager().beginTransaction()
                                                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                                                 .replace(R.id.tournament_layout, tournamentDataFragment).commit();
