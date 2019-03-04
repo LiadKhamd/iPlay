@@ -74,6 +74,8 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mAdapter = new TournamentRecyclerViewAdapter(getContext(), null);
+        mRecyclerView.setAdapter(mAdapter);
         mItemClickListener = this;
         ((TournamentActivity) getActivity()).requestLocation(this);
         return view;
@@ -117,6 +119,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                mWaitForResultTournament.setVisibility(View.VISIBLE);
                                 mWaitForResultTournament.setText(R.string.result_not_found);
                                 mDocuments.clear();
                                 mAdapter.notifyDataSetChanged();
@@ -126,7 +129,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mWaitForResultTournament.setText("");//mWaitForResultTournament.setVisibility(View.INVISIBLE);
+                                mWaitForResultTournament.setVisibility(View.INVISIBLE);
                                 mAdapter.notifyDataSetChanged();
                             }
                         });

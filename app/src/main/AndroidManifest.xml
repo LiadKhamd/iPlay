@@ -16,7 +16,9 @@
         android:testOnly="false"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,9 +26,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Tournament.TournamentActivity" />
-        <activity android:name=".UserProfile.UserProfileActivity" />
-        <activity android:name=".Login.LoginActivity" />
+        <activity
+            android:name=".Tournament.TournamentActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".UserProfile.UserProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Login.LoginActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="preloaded_fonts"
