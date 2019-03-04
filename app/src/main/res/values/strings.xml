@@ -77,5 +77,5 @@
     <string name="is_look_like_tournament_delete">The tournament has deleted</string>
     <string name="you_leave_tournament">You had leave the tournament</string>
     <string name="tournament_end">This tournament start now</string>
-
+    <string name="delimiter">:</string>
 </resources>

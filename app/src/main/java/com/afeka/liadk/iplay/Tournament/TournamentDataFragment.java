@@ -77,8 +77,6 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
                                             throw ex;
                                         } catch (Exception e) {
                                             Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                            Fragment menuFragment = new TournamentMenuFragment();
-                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.tournament_layout, menuFragment).commit();
                                         }
                                     }
                                 }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -393,14 +391,14 @@ public class TournamentDataFragment extends Fragment implements CloudFirestoreCo
     }
 
     private void setTournamentData() {
-        mCity.setText(getContext().getResources().getString(R.string.city) + ": " + mTournamentInfo.getmCity());
-        mPlace.setText(getContext().getResources().getString(R.string.place) + ": " + mTournamentInfo.getmPlace());
-        mSport.setText(getContext().getResources().getString(R.string.sport) + ": " + mTournamentInfo.getmSport());
+        mCity.setText(mTournamentInfo.getmCity());
+        mPlace.setText(mTournamentInfo.getmPlace());
+        mSport.setText(mTournamentInfo.getmSport());
         Date date = new Date(mTournamentInfo.getmTime());
         if (date.getMinutes() < 10)
-            mTime.setText(getContext().getResources().getString(R.string.time) + ": " + date.getHours() + ":0" + date.getMinutes());
+            mTime.setText(date.getHours() + ":0" + date.getMinutes());
         else
-            mTime.setText(getContext().getResources().getString(R.string.time) + ": " + date.getHours() + ":" + date.getMinutes());
-        mPlayers.setText(getContext().getResources().getString(R.string.players) + ": " + mTournamentInfo.getPlayers() + "/" + mTournamentInfo.getmMaxParticipants());
+            mTime.setText(date.getHours() + ":" + date.getMinutes());
+        mPlayers.setText(mTournamentInfo.getPlayers() + "/" + mTournamentInfo.getmMaxParticipants());
     }
 }
