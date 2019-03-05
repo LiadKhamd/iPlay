@@ -15,10 +15,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afeka.liadk.iplay.FireBaseConst;
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.FireBaseConst;
-import com.afeka.liadk.iplay.Tournament.TournamentActivity;
 import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,10 +44,6 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
             @Override
             public void onClick(View view) {
                 createUser();
-//                Intent intent = new Intent(getContext(), AppActivity.class);
-//                startActivity(intent);
-//                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//                getActivity().finish();
             }
         });
         view.findViewById(R.id.logout_profile_button).setOnClickListener(new View.OnClickListener() {
@@ -111,10 +106,11 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 mProgressDialog.cancel();
-                                                Intent intent = new Intent(getActivity(), TournamentActivity.class);
-                                                startActivity(intent);
-                                                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                getActivity().finish();
+                                                Fragment updateProfileImage = new UserImageProfileFragment();
+                                                getActivity().getSupportFragmentManager().beginTransaction().
+                                                        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                                                        .replace(R.id.user_profile, updateProfileImage)
+                                                        .commit();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override

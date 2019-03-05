@@ -11,7 +11,7 @@ public class UserData {
 
     private String mUserUID;
     private UserTournamentRegister mEvent;
-    private Uri mUriImage;
+    private String mUriImage;
 
     public UserData() {
 
@@ -39,7 +39,7 @@ public class UserData {
         this.mEvent = new UserTournamentRegister(mCity, mSport, mEventKey);
     }
 
-    public Uri getmUriImage() {
+    public String getmUriImage() {
         return mUriImage;
     }
 
@@ -47,7 +47,7 @@ public class UserData {
         this.mEvent = mEvent;
     }
 
-    public void setmUriImage(Uri mUriImage) {
+    public void setmUriImage(String mUriImage) {
         this.mUriImage = mUriImage;
     }
 }
