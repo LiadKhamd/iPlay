@@ -84,4 +84,5 @@
     <string name="write_permission">The app need to permission to write your proflie picture</string>
     <string name="read_permission">The app need permission to read your proflie image from the phone</string>
     <string name="storage_access">Storage access</string>
+    <string name="update_done">Your profile is up-to-date!</string>
 </resources>

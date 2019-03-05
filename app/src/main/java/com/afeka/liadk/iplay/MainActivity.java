@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements CloudFirestoreConst {
+public class MainActivity extends AppCompatActivity implements FireBaseConst {
 
     public static final int REQUEST_CODE_READ = 102;
     public static final int REQUEST_CODE_WRITE = 103;
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements CloudFirestoreCon
 
     public static FirebaseAuth firebaseAuth;
     public static FirebaseUser CurrentUser;
+
+    private static ImageReq mImageReq;
 
     @Override
     public void onStart() {
@@ -208,6 +210,41 @@ public class MainActivity extends AppCompatActivity implements CloudFirestoreCon
         } else {
             // Permission has already been granted
             return true;
+        }
+    }
+
+    public void setStorageListener(ImageReq mImageReq) {
+        mImageReq = mImageReq;
+    }
+
+    public interface ImageReq {
+        void iGetPermissionToRead();
+
+        void iGetPermissionToWrite();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case MainActivity.REQUEST_CODE_READ: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted
+                    if (mImageReq != null)
+                        mImageReq.iGetPermissionToRead();
+                }
+                return;
+            }
+            case MainActivity.REQUEST_CODE_WRITE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted
+                    if (mImageReq != null)
+                        mImageReq.iGetPermissionToWrite();
+                }
+                return;
+            }
         }
     }
 }

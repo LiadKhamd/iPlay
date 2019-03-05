@@ -3,7 +3,7 @@ package com.afeka.liadk.iplay;
 /**
  * Created by liadk
  */
-public interface CloudFirestoreConst {
+public interface FireBaseConst {
 
     final String USERS= "users";
     final String CITY = "city";

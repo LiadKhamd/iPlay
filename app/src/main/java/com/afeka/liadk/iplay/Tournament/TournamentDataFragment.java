@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afeka.liadk.iplay.CloudFirestoreConst;
+import com.afeka.liadk.iplay.FireBaseConst;
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class TournamentDataFragment extends Fragment implements CloudFirestoreConst {
+public class TournamentDataFragment extends Fragment implements FireBaseConst {
 
     private final int REFRESH = 5000;
 

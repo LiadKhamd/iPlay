@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.afeka.liadk.iplay.CloudFirestoreConst;
+import com.afeka.liadk.iplay.FireBaseConst;
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.Tournament.Logic.LocationProvider;
@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class CreateTournamentFragment extends Fragment implements View.OnClickListener, CloudFirestoreConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
+public class CreateTournamentFragment extends Fragment implements View.OnClickListener, FireBaseConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
 
     public final int REQUEST_CODE_GPS = 2;
 

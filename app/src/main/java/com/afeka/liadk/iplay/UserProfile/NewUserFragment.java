@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
-import com.afeka.liadk.iplay.CloudFirestoreConst;
+import com.afeka.liadk.iplay.FireBaseConst;
 import com.afeka.liadk.iplay.Tournament.TournamentActivity;
 import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class NewUserFragment extends Fragment implements CloudFirestoreConst {
+public class NewUserFragment extends Fragment implements FireBaseConst {
 
     private EditText mUserName;
     private CollectionReference mCollectionReference;

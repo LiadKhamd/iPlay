@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afeka.liadk.iplay.CloudFirestoreConst;
+import com.afeka.liadk.iplay.FireBaseConst;
 import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.Tournament.Logic.LocationProvider;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
@@ -42,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class SearchTournamentFragment extends Fragment implements View.OnClickListener, TournamentRecyclerViewAdapter.ItemClickListener, CloudFirestoreConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
+public class SearchTournamentFragment extends Fragment implements View.OnClickListener, TournamentRecyclerViewAdapter.ItemClickListener, FireBaseConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
 
     public final int REQUEST_CODE_GPS = 1;
 
