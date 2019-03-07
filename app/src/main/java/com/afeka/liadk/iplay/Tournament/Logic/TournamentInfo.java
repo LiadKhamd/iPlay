@@ -1,7 +1,5 @@
 package com.afeka.liadk.iplay.Tournament.Logic;
 
-import com.afeka.liadk.iplay.MainActivity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -123,9 +121,8 @@ public class TournamentInfo implements Serializable {
         this.mKey = mKey;
     }
 
-    public boolean addMe() {
+    public boolean addPlayer(String username) {
         if (mParticipantsUsersnames.size() < mMaxParticipants) {
-            String username = MainActivity.CurrentUser.getDisplayName();
             if (!mParticipantsUsersnames.contains(username)) {
                 mParticipantsUsersnames.add(username);
                 return true;
@@ -135,8 +132,17 @@ public class TournamentInfo implements Serializable {
         return false;
     }
 
-    public void removeMe() {
-        String username = MainActivity.CurrentUser.getDisplayName();
+    public void removePlayer(String username) {
         mParticipantsUsersnames.remove(username);
+    }
+
+    public boolean isSamePlayers(TournamentInfo tournamentInfo) {
+        if (mParticipantsUsersnames.size() != tournamentInfo.mParticipantsUsersnames.size())
+            return false;
+        for (int i = 0; i < mParticipantsUsersnames.size(); i++) {
+            if (mParticipantsUsersnames.get(i).compareTo(tournamentInfo.mParticipantsUsersnames.get(i)) != 0)
+                return false;
+        }
+        return true;
     }
 }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.UserProfile.UserProfileActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class TournamentMenuFragment extends Fragment {
@@ -63,7 +64,7 @@ public class TournamentMenuFragment extends Fragment {
                         }).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.logout();
+                                FirebaseAuth.getInstance().signOut();
                                 Intent intent = new Intent(getContext(), MainActivity.class);
                                 startActivity(intent);
                                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

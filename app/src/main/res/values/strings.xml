@@ -13,14 +13,13 @@
     <string name="rest">Rest password</string>
     <string name="rest_pass">Rest password</string>
     <string name="enter_mail">Please enter your mail</string>
-    <string name="wrong_mail">Wrong mail</string>
     <string name="check_mail">Please check your mail</string>
     <string name="register">Register</string>
     <string name="weak_password">Weak password</string>
     <string name="email_badly_formatted">Please check that you have entered the email correctly</string>
     <string name="mail_in_use">Mail is already in used</string>
     <string name="try_again">Please try again</string>
-    <string name="verify_mail">Please check your email. We\'ve sent you an email and we\'re waiting for your approval</string>
+    <string name="verify_mail_text">Please check your email. We\'ve sent you an email and we\'re waiting for your approval</string>
     <string name="send_again">Send again</string>
     <string name="logout">Logout</string>
     <string name="mail_resend">Resend mail to</string>
@@ -50,7 +49,6 @@
     <string name="not_valid">You need to fill in all the form</string>
     <string name="tournament_has_create">Your tournament has been created</string>
     <string name="registered_tournament">Registered Tournament</string>
-    <string name="problem_loading_tournament">Loading</string>
     <string name="search_for_tournament">Find your results here</string>
     <string name="result_not_found">Sorry not tournament has found</string>
     <string name="time_not_valid">Time is not valid for today</string>
@@ -81,8 +79,18 @@
     <string name="title_gps">GPS</string>
     <string name="message_gps">This apps need your gps location to set your city</string>
     <string name="proflie_image">Profile image</string>
-    <string name="write_permission">The app need to permission to write your proflie picture</string>
-    <string name="read_permission">The app need permission to read your proflie image from the phone</string>
+    <string name="write_permission">The app need to permission to write profile picture</string>
+    <string name="read_permission">The app need permission to read profile image from the phone</string>
     <string name="storage_access">Storage access</string>
     <string name="update_done">Your profile is up-to-date!</string>
+    <string name="please_wait_login">Please wait while we log you in ;)</string>
+    <string name="please_wait_rest_password">Please wait while we send you mail to your mail to rest the password</string>
+    <string name="please_wait_register">Plase wait while we create new user for you</string>
+    <string name="mail_verify">Mail verification</string>
+    <string name="new_username">New username</string>
+    <string name="please_wait_update_proflie">Please wait while we update your profile image</string>
+    <string name="update_image_profile">Update profile image</string>
+    <string name="please_wait_search">Please be patient while we are searching for tournament</string>
+    <string name="please_wait_create">Please be patient while we are creating your tournament</string>
+
 </resources>

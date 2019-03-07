@@ -4,6 +4,4 @@
     android:id="@+id/tournament_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Tournament.TournamentActivity">
-
-</FrameLayout>
+    tools:context=".Tournament.TournamentActivity" />

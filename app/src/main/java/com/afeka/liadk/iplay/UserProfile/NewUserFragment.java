@@ -22,22 +22,25 @@ import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class NewUserFragment extends Fragment implements FireBaseConst {
 
     private EditText mUserName;
     private CollectionReference mCollectionReference;
     private ProgressDialog mProgressDialog;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_user, container, false);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mUserName = view.findViewById(R.id.username_edit_text);
         mCollectionReference = FirebaseFirestore.getInstance().collection(USERS);
         view.findViewById(R.id.next_profile_button).setOnClickListener(new View.OnClickListener() {
@@ -49,7 +52,7 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
         view.findViewById(R.id.logout_profile_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.logout();
+                mFirebaseAuth.signOut();
                 Intent mainActivity = new Intent(getContext(), MainActivity.class);
                 startActivity(mainActivity);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -57,6 +60,7 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
             }
         });
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
+        mProgressDialog.setTitle(R.string.new_username);
         mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
         mProgressDialog.setCancelable(false);
         return view;
@@ -77,8 +81,6 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
                         throw ex;
                     } catch (FirebaseNetworkException e) {
                         Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                    } catch (FirebaseFirestoreException e) {
-                        Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
                     }
@@ -91,8 +93,9 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
                         mProgressDialog.cancel();
                         Toast.makeText(getContext(), R.string.username_used, Toast.LENGTH_LONG).show();
                     } else {
+                        final FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
                         //Try to set the username
-                        UserData userData = new UserData(MainActivity.CurrentUser.getUid());
+                        UserData userData = new UserData(currentUser.getUid());
                         mCollectionReference.document(username).set(userData).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -100,7 +103,7 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(username)
                                         .build();
-                                MainActivity.CurrentUser.updateProfile(profileUpdates)
+                                currentUser.updateProfile(profileUpdates)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             //all good
                                             @Override
@@ -121,8 +124,6 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
                                             throw ex;
                                         } catch (FirebaseNetworkException e) {
                                             Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                        } catch (FirebaseFirestoreException e) {
-                                            Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                         } catch (Exception e) {
                                             Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
                                         }
@@ -137,8 +138,6 @@ public class NewUserFragment extends Fragment implements FireBaseConst {
                                 try {
                                     throw ex;
                                 } catch (FirebaseNetworkException e) {
-                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                } catch (FirebaseFirestoreException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/half_background"
     android:orientation="vertical"
     android:weightSum="10"
@@ -26,7 +26,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/slogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
@@ -46,26 +45,25 @@
 
 
     <android.support.v7.widget.GridLayout
-        android:id="@+id/mainGrid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
+        android:padding="14dp"
         app:alignmentMode="alignMargins"
         app:columnCount="2"
         app:columnOrderPreserved="false"
-        android:padding="14dp"
         app:rowCount="2">
 
         <android.support.v7.widget.CardView
             android:id="@+id/create_a_tournament"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_rowWeight="1"
-            app:layout_columnWeight="1"
             android:layout_margin="16dp"
             android:background="@color/colorPrimary"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -84,8 +82,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="16dp"
+                    android:gravity="center"
                     android:text="@string/create_tournament"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -100,11 +98,11 @@
             android:id="@+id/search_for_tournament"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_rowWeight="1"
-            app:layout_columnWeight="1"
             android:layout_margin="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -123,8 +121,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="16dp"
+                    android:gravity="center"
                     android:text="@string/search_tournament"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -139,11 +137,11 @@
             android:id="@+id/my_proflie"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_rowWeight="1"
-            app:layout_columnWeight="1"
             android:layout_margin="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -162,8 +160,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="16dp"
+                    android:gravity="center"
                     android:text="@string/my_profile"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
@@ -178,11 +176,11 @@
             android:id="@+id/logout_tournament"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_rowWeight="1"
-            app:layout_columnWeight="1"
             android:layout_margin="16dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -201,8 +199,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="16dp"
+                    android:gravity="center"
                     android:text="@string/logout"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"

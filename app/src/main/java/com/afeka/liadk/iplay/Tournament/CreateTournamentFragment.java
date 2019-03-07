@@ -22,7 +22,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.afeka.liadk.iplay.FireBaseConst;
-import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
 import com.afeka.liadk.iplay.Tournament.Logic.LocationProvider;
 import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
@@ -30,10 +29,11 @@ import com.afeka.liadk.iplay.UserProfile.Logic.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,7 +42,7 @@ import java.util.Date;
 
 public class CreateTournamentFragment extends Fragment implements View.OnClickListener, FireBaseConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
 
-    public final int REQUEST_CODE_GPS = 2;
+    final int MIN_PLAYERS = 2;
 
     private EditText mCity, mPlace, mSport, mMaxParticipants, mCode;
     private TextView mTime;
@@ -89,7 +89,8 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
             }
         });
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
-        mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
+        mProgressDialog.setTitle(R.string.create);
+        mProgressDialog.setMessage(getContext().getString(R.string.please_wait_create));
         mProgressDialog.setCancelable(false);
         mCollectionReferenceEvent = FirebaseFirestore.getInstance().collection(EVENT);
         mCollectionReferenceEventCurrentUser = FirebaseFirestore.getInstance().collection(USERS);
@@ -119,7 +120,6 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        boolean isValidData = false;
         String city, place, sport, maxParticipantsString, timeString, code = null;
         city = mCity.getText().toString().trim().toLowerCase();
         place = mPlace.getText().toString().trim().toLowerCase();
@@ -148,12 +148,12 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                 return;
             }
             int maxParticipants = Integer.parseInt(maxParticipantsString);
-            if (maxParticipants < 2) {
+            if (maxParticipants < MIN_PLAYERS) {
                 //Check participants
                 Toast.makeText(getContext(), R.string.max_player_not_valid, Toast.LENGTH_LONG).show();
                 return;
             }
-            String username = MainActivity.CurrentUser.getDisplayName();
+            String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             TournamentInfo tournamentInfo = new TournamentInfo(city, place, sport, time, maxParticipants, privateTournament, code, username, System.currentTimeMillis());
             uploadTournament(tournamentInfo);
         } else
@@ -165,7 +165,8 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         final String newDateStr = dateFormat.format(date);
-        mCollectionReferenceEventCurrentUser.document(MainActivity.CurrentUser.getDisplayName()).get()
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mCollectionReferenceEventCurrentUser.document(currentUser.getDisplayName()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -178,7 +179,7 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        mCollectionReferenceEventCurrentUser.document(MainActivity.CurrentUser.getDisplayName())
+                                        mCollectionReferenceEventCurrentUser.document(currentUser.getDisplayName())
                                                 .set(userData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
@@ -201,8 +202,6 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                                     throw ex;
                                                 } catch (FirebaseNetworkException e) {
                                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                                } catch (FirebaseFirestoreException e) {
-                                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                                 } catch (Exception e) {
                                                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
                                                 }
@@ -219,8 +218,6 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                                     throw ex;
                                 } catch (FirebaseNetworkException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                } catch (FirebaseFirestoreException e) {
-                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
                                 }
@@ -234,8 +231,6 @@ public class CreateTournamentFragment extends Fragment implements View.OnClickLi
                 try {
                     throw ex;
                 } catch (FirebaseNetworkException e) {
-                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                } catch (FirebaseFirestoreException e) {
                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();

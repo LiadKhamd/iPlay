@@ -21,13 +21,14 @@ import com.afeka.liadk.iplay.Tournament.Logic.TournamentInfo;
 public class TournamentActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION_PERMISSION = 101;
+
     private static LocationPermission currentFragment;
 
     interface LocationPermission {
         void listenerToLocation();
     }
 
-    public static void requestLocation(LocationPermission locationPermission){
+    public static void requestLocation(LocationPermission locationPermission) {
         currentFragment = locationPermission;
     }
 

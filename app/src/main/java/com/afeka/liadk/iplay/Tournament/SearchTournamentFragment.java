@@ -44,8 +44,6 @@ import java.util.List;
 
 public class SearchTournamentFragment extends Fragment implements View.OnClickListener, TournamentRecyclerViewAdapter.ItemClickListener, FireBaseConst, LocationProvider.MyLocation, TournamentActivity.LocationPermission {
 
-    public final int REQUEST_CODE_GPS = 1;
-
     private EditText mCity, mSport;
     private RecyclerView mRecyclerView;
     private ProgressDialog mProgressDialog;
@@ -66,7 +64,8 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
         mSport = view.findViewById(R.id.sport_search_tournament);
         mRecyclerView = view.findViewById(R.id.tournament_recyclerView);
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
-        mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
+        mProgressDialog.setTitle(R.string.search);
+        mProgressDialog.setMessage(getContext().getString(R.string.please_wait_search));
         mProgressDialog.setCancelable(false);
         mCollectionReferenceEvent = FirebaseFirestore.getInstance().collection(EVENT);
         mWaitForResultTournament = view.findViewById(R.id.result_tournament_search);
@@ -102,9 +101,7 @@ public class SearchTournamentFragment extends Fragment implements View.OnClickLi
                         throw ex;
                     } catch (FirebaseNetworkException e) {
                         Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                    } catch (FirebaseFirestoreException e) {
-                        Toast.makeText(getContext(), R.string.result_not_found, Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
+                   } catch (Exception e) {
                         Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
                     }
                 }

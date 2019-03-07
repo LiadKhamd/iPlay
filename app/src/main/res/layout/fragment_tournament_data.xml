@@ -15,19 +15,19 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:foregroundGravity="center"
         android:gravity="center"
         android:textAllCaps="false"
         android:textColor="@color/colorAccent"
-        android:textSize="36sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:layout_weight="8">
+        android:layout_margin="8dp"
+        android:layout_weight="9">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,6 +38,7 @@
             <android.support.v7.widget.GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="16sp"
                 android:layout_weight="5.5"
                 app:alignmentMode="alignMargins"
                 app:columnCount="3"
@@ -194,9 +195,13 @@
 
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/username_in_tournament_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="9.5" />
+                android:layout_margin="6dp"
+                android:layout_weight="9"
+                android:background="@drawable/border"
+                android:padding="8dp" />
 
         </LinearLayout>
 

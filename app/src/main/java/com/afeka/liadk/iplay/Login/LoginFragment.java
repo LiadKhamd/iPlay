@@ -21,17 +21,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private TextView mMail, mPass;
     private ProgressDialog mProgressDialog;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mMail = view.findViewById(R.id.mail_login);
         mPass = view.findViewById(R.id.password_login);
         view.findViewById(R.id.register_login).setOnClickListener(new View.OnClickListener() {
@@ -50,27 +54,26 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         .replace(R.id.main_login, registerFrag).addToBackStack(null).commit();
             }
         });
-        view.findViewById(R.id.rest_password_login).
-
-                setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //Goto rest password fragment
-                        Fragment restPassFrag = new RestPasswordFragment();
-                        String mail = mMail.getText().toString().trim();
-                        if (!TextUtils.isEmpty(mail)) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(RestPasswordFragment.MAIL_SAVER, mail);
-                            restPassFrag.setArguments(bundle);
-                        }
-                        getActivity().getSupportFragmentManager().beginTransaction().
-                                setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-                                .replace(R.id.main_login, restPassFrag).addToBackStack(null).commit();
-                    }
-                });
+        view.findViewById(R.id.rest_password_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Goto rest password fragment
+                Fragment restPassFrag = new RestPasswordFragment();
+                String mail = mMail.getText().toString().trim();
+                if (!TextUtils.isEmpty(mail)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(RestPasswordFragment.MAIL_SAVER, mail);
+                    restPassFrag.setArguments(bundle);
+                }
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.main_login, restPassFrag).addToBackStack(null).commit();
+            }
+        });
         view.findViewById(R.id.login_button).setOnClickListener(this);
         mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
-        mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
+        mProgressDialog.setTitle(R.string.login);
+        mProgressDialog.setMessage(getContext().getString(R.string.please_wait_login));
         mProgressDialog.setCancelable(false);
         return view;
     }
@@ -82,13 +85,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if ((!TextUtils.isEmpty(mail)) && (!TextUtils.isEmpty(pass))) {
             //Mail and password is not empty
             mProgressDialog.show();
-            MainActivity.firebaseAuth.signInWithEmailAndPassword(mail, pass)
+            mFirebaseAuth.signInWithEmailAndPassword(mail, pass)
                     .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {//user is login
-                                MainActivity.CurrentUser = MainActivity.firebaseAuth.getCurrentUser();
-                                if (!MainActivity.CurrentUser.isEmailVerified()) {
+                                FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+                                if (!currentUser.isEmailVerified()) {
                                     //Goto mail verify fragment
                                     Fragment mailVerificationFrag = new MailVerificationFragment();
                                     getActivity().getSupportFragmentManager().beginTransaction().
@@ -106,8 +109,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseNetworkException e) {
-                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                } catch (FirebaseFirestoreException e) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getContext(), R.string.authentication_failed, Toast.LENGTH_LONG).show();

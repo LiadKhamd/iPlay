@@ -26,12 +26,18 @@ public class UserProfileActivity extends AppCompatActivity {
                     setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.user_profile, newUser)
                     .commit();
-        } else {
+        } else {//Update user profile image
             Fragment updateProfileImage = new UserImageProfileFragment();
             getSupportFragmentManager().beginTransaction().
                     setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.user_profile, updateProfileImage)
-                        .commit();
+                    .commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

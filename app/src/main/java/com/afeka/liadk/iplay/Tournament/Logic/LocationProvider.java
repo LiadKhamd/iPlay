@@ -17,6 +17,7 @@ import java.util.Locale;
  */
 public class LocationProvider implements LocationListener {
 
+    private final String LOCATION_LANGUISH = "en-US";
     private final int REFRESH = 1000 * 60 * 2;
 
     private LocationManager mLocationManager;
@@ -79,7 +80,7 @@ public class LocationProvider implements LocationListener {
     }
 
     private String getCurrentCity(Context context, Location location) {
-        Geocoder gcd = new Geocoder(context, Locale.getDefault());
+        Geocoder gcd = new Geocoder(context, new Locale(LOCATION_LANGUISH));
         List<Address> addresses = null;
         String locality = null;
         try {

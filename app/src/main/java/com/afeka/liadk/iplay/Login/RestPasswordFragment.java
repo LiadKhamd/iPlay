@@ -15,12 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afeka.liadk.iplay.MainActivity;
 import com.afeka.liadk.iplay.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class RestPasswordFragment extends Fragment {
 
@@ -28,22 +27,21 @@ public class RestPasswordFragment extends Fragment {
 
     private TextView mMail;
     private ProgressDialog mProgressDialog;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rest_password, container, false);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         Bundle bundle = this.getArguments();
         mMail = view.findViewById(R.id.mail_rest);
-        if (bundle != null) {
+        if (bundle != null) {//Check if there is a mail address
             String mail = bundle.getString(MAIL_SAVER, null);
             if (mail != null)
                 mMail.setText(mail);
         }
-        mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
-        mProgressDialog.setMessage(getContext().getString(R.string.please_wait));
-        mProgressDialog.setCancelable(false);
         view.findViewById(R.id.rest_pass_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +49,7 @@ public class RestPasswordFragment extends Fragment {
                 if (!TextUtils.isEmpty(mail)) {
                     //send rest password mail
                     mProgressDialog.show();
-                    MainActivity.firebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    mFirebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             mProgressDialog.cancel();
@@ -70,8 +68,6 @@ public class RestPasswordFragment extends Fragment {
                                 throw e;
                             } catch (FirebaseNetworkException ex) {
                                 Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                            } catch (FirebaseFirestoreException ex) {
-                                Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                             } catch (Exception ex) {
                                 Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
                             }
@@ -83,6 +79,10 @@ public class RestPasswordFragment extends Fragment {
                 }
             }
         });
+        mProgressDialog = new ProgressDialog(getContext(), R.style.ProgressDialogTheme);
+        mProgressDialog.setTitle(R.string.rest_pass);
+        mProgressDialog.setMessage(getContext().getString(R.string.please_wait_rest_password));
+        mProgressDialog.setCancelable(false);
         return view;
     }
 }

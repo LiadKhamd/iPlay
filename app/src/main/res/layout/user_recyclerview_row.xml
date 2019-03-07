@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_ripple"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal"
+    android:weightSum="3">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2" />
+
+    <TextView
+        android:id="@+id/username_in_tournament"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center"
+        android:layout_weight="1.8"
+        android:gravity="start|center"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_in_tournament_proflie_image"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:src="@drawable/blank_profile_pic" />
+
+</LinearLayout>

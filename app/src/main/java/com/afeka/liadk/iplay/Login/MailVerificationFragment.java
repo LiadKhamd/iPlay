@@ -21,19 +21,23 @@ import com.afeka.liadk.iplay.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MailVerificationFragment extends Fragment {
 
     private final int REFRESH = 1000;
 
-    private Thread mThread;
     private boolean mThreadRefresh;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mCurrentUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mail_verification, container, false);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mFirebaseAuth.getCurrentUser();
         //Animation background
         AnimationDrawable animationDrawable = (AnimationDrawable) view.findViewById(R.id.mainVerificationMail).getBackground();
         animationDrawable.setEnterFadeDuration(1000);
@@ -58,14 +62,14 @@ public class MailVerificationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mThreadRefresh = true;
-        mThread = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 //Refresh the page in order to check if mail has verified
                 while (mThreadRefresh) {
                     try {
-                        MainActivity.CurrentUser.reload();
-                        if (MainActivity.CurrentUser.isEmailVerified()) {
+                        mCurrentUser.reload();
+                        if (mCurrentUser.isEmailVerified()) {
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             startActivity(intent);
                             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -76,8 +80,7 @@ public class MailVerificationFragment extends Fragment {
                     }
                 }
             }
-        });
-        mThread.start();
+        }).start();
     }
 
     @Override
@@ -89,11 +92,11 @@ public class MailVerificationFragment extends Fragment {
     private void sendAgain() {
         //send again mail verification
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
-        String resendMail = getContext().getString(R.string.mail_resend) + " " + MainActivity.CurrentUser.getEmail();
-        builder.setMessage(resendMail)
+        String resendMail = getContext().getString(R.string.mail_resend) + " " + mCurrentUser.getEmail();
+        builder.setTitle(R.string.mail_verify).setMessage(resendMail)
                 .setPositiveButton(R.string.send, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        MainActivity.CurrentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        mCurrentUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getContext(), R.string.check_mail, Toast.LENGTH_LONG).show();
@@ -104,8 +107,6 @@ public class MailVerificationFragment extends Fragment {
                                 try {
                                     throw e;
                                 } catch (FirebaseNetworkException e1) {
-                                    Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
-                                } catch (FirebaseFirestoreException e1) {
                                     Toast.makeText(getContext(), R.string.network_problem, Toast.LENGTH_LONG).show();
                                 } catch (Exception e1) {
                                     Toast.makeText(getContext(), R.string.try_again, Toast.LENGTH_LONG).show();
@@ -126,7 +127,7 @@ public class MailVerificationFragment extends Fragment {
     }
 
     private void logout() {
-        MainActivity.logout();
+        mFirebaseAuth.signOut();
         Fragment loginFrag = new LoginFragment();
         getActivity().getSupportFragmentManager().beginTransaction().
                 setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)

@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@drawable/custom_ripple"
     android:clickable="true"
     android:focusable="true"
+    android:orientation="horizontal"
     android:weightSum="5">
 
     <LinearLayout
@@ -19,17 +19,17 @@
             android:id="@+id/place_of_tournament"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/time_of_tournament"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@android:color/transparent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -37,8 +37,8 @@
         android:id="@+id/tournament_is_private"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_weight="2"
+        android:gravity="center"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20sp" />
 
@@ -46,7 +46,7 @@
         android:id="@+id/current_tournament_players"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_weight="1"
+        android:gravity="center"
         android:textSize="20sp" />
 </LinearLayout>

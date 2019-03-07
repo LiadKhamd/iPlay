@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.afeka.liadk.iplay.R;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Date;
 import java.util.List;

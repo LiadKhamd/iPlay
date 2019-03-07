@@ -1,7 +1,5 @@
 package com.afeka.liadk.iplay.UserProfile.Logic;
 
-import android.net.Uri;
-
 import com.afeka.liadk.iplay.Tournament.Logic.UserTournamentRegister;
 
 /*
