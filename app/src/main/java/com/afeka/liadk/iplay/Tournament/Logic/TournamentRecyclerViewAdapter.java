@@ -51,6 +51,8 @@ public class TournamentRecyclerViewAdapter extends RecyclerView.Adapter<Tourname
             viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes() + "0");
         else
             viewHolder.mTime.setText(date.getHours() + ":" + date.getMinutes());
+        if (tournamentInfo.getPlayers() == tournamentInfo.getmMaxParticipants())
+            viewHolder.mPlayers.setTextColor(mInflater.getContext().getResources().getColor(android.R.color.holo_red_light));
         viewHolder.mPlayers.setText(tournamentInfo.getPlayers() + "/" + tournamentInfo.getmMaxParticipants());
         if (tournamentInfo.ismPrivate()) {
             viewHolder.mPrivate.setText(R.string.is_private);
